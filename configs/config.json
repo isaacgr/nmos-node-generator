@@ -7,7 +7,11 @@
       "audio": 1,
       "data": 1
     },
-    "senders": 1,
+    "senders": {
+      "video": 1,
+      "audio": 1,
+      "data": 1
+    },
     "receivers": {
       "video": 1,
       "audio": 1,
@@ -17,7 +21,7 @@
   },
   "registry": {
     "ip": "localhost",
-    "port": 7893,
+    "port": 8010,
     "scheme": "http",
     "version": "1.2"
   },

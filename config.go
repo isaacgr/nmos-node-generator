@@ -25,10 +25,16 @@ type ReceiverResource struct {
 	Data  int `json:"data"`
 }
 
+type SenderResource struct {
+	Video int `json:"video"`
+	Audio int `json:"audio"`
+	Data  int `json:"data"`
+}
+
 type ResourceQuantities struct {
 	Nodes     int              `json:"nodes"`
 	Devices   int              `json:"devices"`
-	Senders   int              `json:"senders"`
+	Senders   SenderResource   `json:"senders"`
 	Receivers ReceiverResource `json:"receivers"`
 	Flows     int              `json:"flows"`
 	Sources   SourceResource   `json:"sources"`
