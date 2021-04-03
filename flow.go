@@ -1,5 +1,9 @@
 package main
 
+type Flow interface {
+	BuildResource(d Device, s Source, index int)
+}
+
 func (f *FlowVideo) BuildResource(d Device, s SourceGeneric, index int) {
 	label := getResourceLabel("TestFlowVideo", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Video Flow", d, *s.BaseSource)

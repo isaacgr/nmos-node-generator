@@ -31,6 +31,9 @@ func main() {
 	var dg sync.WaitGroup
 
 	numNodes := config.ResourceQuantities.Nodes
+	if numNodes == 0 {
+		log.Fatal("Must define at least one node")
+	}
 	numDevices := config.ResourceQuantities.Devices
 	numVideoReceivers := config.ResourceQuantities.Receivers.Video
 	numAudioReceivers := config.ResourceQuantities.Receivers.Audio
@@ -42,9 +45,7 @@ func main() {
 	nodes := BuildNodes(numNodes)
 	devices := BuildDevices(nodes, numDevices)
 	receivers := BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
-	genericSources := BuildGenericSources(devices, numGenericSources)
-	audioSources := BuildAudioSources(devices, numAudioSources)
-	dataSources := BuildDataSources(devices, numDataSources)
+	sources := BuildSources(devices, numGenericSources, numAudioSources, numDataSources)
 
 	k := make(chan string)
 	for _, n := range nodes {
@@ -59,9 +60,7 @@ func main() {
 	dg.Add(1)
 	go RegisterDevices(client, devices, &ng, &dg)
 	go RegisterRecievers(client, receivers, &dg)
-	go RegisterGenericSources(client, genericSources, &dg)
-	go RegisterAudioSources(client, audioSources, &dg)
-	go RegisterDataSources(client, dataSources, &dg)
+	go RegisterSources(client, sources, &dg)
 
 	for n := range k {
 		go func(n string) {
@@ -103,55 +102,41 @@ func BuildReceivers(n []Node, d []Device, nvr int, nar int, ndr int) []Receiver 
 	receivers := []Receiver{}
 	for j := 0; j < len(d); j++ {
 		for i := 0; i < nvr; i++ {
-			receiver := Receiver{}
-			receiver.BuildResource(n[i], &d[i], "video", i+1)
-			receivers = append(receivers, receiver)
+			receiver := ReceiverVideo{}
+			receiver.BuildResource(n[i], &d[i], i+1)
+			receivers = append(receivers, &receiver)
 		}
 		for i := 0; i < nar; i++ {
-			receiver := Receiver{}
-			receiver.BuildResource(n[i], &d[i], "audio", i+1)
-			receivers = append(receivers, receiver)
+			receiver := ReceiverAudio{}
+			receiver.BuildResource(n[i], &d[i], i+1)
+			receivers = append(receivers, &receiver)
 		}
 		for i := 0; i < ndr; i++ {
-			receiver := Receiver{}
-			receiver.BuildResource(n[i], &d[i], "data", i+1)
-			receivers = append(receivers, receiver)
+			receiver := ReceiverData{}
+			receiver.BuildResource(n[i], &d[i], i+1)
+			receivers = append(receivers, &receiver)
 		}
 	}
 	return receivers
 }
 
-func BuildGenericSources(d []Device, ns int) []SourceGeneric {
-	sources := []SourceGeneric{}
-	for i := 0; i < ns; i++ {
-		for j := 0; j < len(d); j++ {
+func BuildSources(d []Device, ngs int, nas int, nds int) []Source {
+	sources := []Source{}
+	for j := 0; j < len(d); j++ {
+		for i := 0; i < ngs; i++ {
 			source := SourceGeneric{}
 			source.BuildResource(d[i], i+1)
-			sources = append(sources, source)
+			sources = append(sources, &source)
 		}
-	}
-	return sources
-}
-
-func BuildAudioSources(d []Device, ns int) []SourceAudio {
-	sources := []SourceAudio{}
-	for i := 0; i < ns; i++ {
-		for j := 0; j < len(d); j++ {
+		for i := 0; i < nas; i++ {
 			source := SourceAudio{}
 			source.BuildResource(d[i], i+1)
-			sources = append(sources, source)
+			sources = append(sources, &source)
 		}
-	}
-	return sources
-}
-
-func BuildDataSources(d []Device, ns int) []SourceData {
-	sources := []SourceData{}
-	for i := 0; i < ns; i++ {
-		for j := 0; j < len(d); j++ {
+		for i := 0; i < nds; i++ {
 			source := SourceData{}
 			source.BuildResource(d[i], i+1)
-			sources = append(sources, source)
+			sources = append(sources, &source)
 		}
 	}
 	return sources

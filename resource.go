@@ -12,11 +12,6 @@ import (
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-type NmosResource interface {
-	BuildResource()
-	WriteResourceToFile()
-}
-
 func SetBaseResourceProperties(label string, description string) *BaseResource {
 	r := BaseResource{}
 	r.ID = uuid.NewString()

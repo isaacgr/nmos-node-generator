@@ -1,8 +1,11 @@
 package main
 
-import "log"
+type Sender interface {
+	BuildResource(n Node, d Device, f *BaseFlow, index int)
+}
 
-func (s *Sender) BuildResource(n Node, d Device, f *BaseFlow, t string, index int) {
+func BuildBaseSender(n Node, d Device, f *BaseFlow) *BaseSender {
+	s := BaseSender{}
 	for i, iface := range n.Interfaces {
 		s.InterfaceBindings = append(s.InterfaceBindings, iface.Name)
 		if i == 1 {
@@ -12,18 +15,22 @@ func (s *Sender) BuildResource(n Node, d Device, f *BaseFlow, t string, index in
 	s.DeviceId = d.ID
 	s.FlowId = f.ID
 	s.Transport = SenderTransport
+	return &s
+}
 
-	switch t {
-	case "video":
-		label := getResourceLabel("TestReceiverVideo", index)
-		s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Receiver")
-	case "audio":
-		label := getResourceLabel("TestReceiverAudio", index)
-		s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Receiver")
-	case "data":
-		label := getResourceLabel("TestReceiverData", index)
-		s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Receiver")
-	default:
-		log.Fatal("No valid sender type provided")
-	}
+func (s *SenderVideo) BuildResource(n Node, d Device, f *BaseFlow, index int) {
+	s.BaseSender = BuildBaseSender(n, d, f)
+	label := getResourceLabel("TestReceiverVideo", index)
+	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Receiver")
+}
+
+func (s *SenderAudio) BuildResource(n Node, d Device, f *BaseFlow, index int) {
+	s.BaseSender = BuildBaseSender(n, d, f)
+	label := getResourceLabel("TestReceiverAudio", index)
+	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Receiver")
+}
+func (s *SenderData) BuildResource(n Node, d Device, f *BaseFlow, index int) {
+	s.BaseSender = BuildBaseSender(n, d, f)
+	label := getResourceLabel("TestReceiverData", index)
+	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Receiver")
 }

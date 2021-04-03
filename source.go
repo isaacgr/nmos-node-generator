@@ -1,5 +1,9 @@
 package main
 
+type Source interface {
+	BuildResource(d Device, index int)
+}
+
 func (s *SourceGeneric) BuildResource(d Device, index int) {
 	label := getResourceLabel("TestGenericSource", index)
 	s.BaseSource = SetBaseSourceProperties(label, "NMOS Test Source Generic", d)

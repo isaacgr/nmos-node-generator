@@ -94,7 +94,7 @@ type SenderSubscription struct {
 	Active     bool    `json:"active"`
 }
 
-type Sender struct {
+type BaseSender struct {
 	*BaseResource
 	FlowId            string             `json:"flow_id"`
 	Caps              Capabilities       `json:"caps"`
@@ -103,6 +103,18 @@ type Sender struct {
 	Manifest          string             `json:"manifest"`
 	InterfaceBindings []string           `json:"interface_bindings"`
 	Subscription      SenderSubscription `json:"subscription"`
+}
+
+type SenderVideo struct {
+	*BaseSender
+}
+
+type SenderAudio struct {
+	*BaseSender
+}
+
+type SenderData struct {
+	*BaseSender
 }
 
 // Receiver
@@ -116,7 +128,7 @@ type ReceiverCaps struct {
 	MediaTypes []string `json:"media_types"`
 }
 
-type Receiver struct {
+type BaseReceiver struct {
 	*BaseResource
 	Transport         string               `json:"transport"`
 	DeviceId          string               `json:"device_id"`
@@ -124,6 +136,18 @@ type Receiver struct {
 	Subscription      ReceiverSubscription `json:"subscription"`
 	Format            string               `json:"format"`
 	Caps              ReceiverCaps         `json:"caps"`
+}
+
+type ReceiverVideo struct {
+	*BaseReceiver
+}
+
+type ReceiverAudio struct {
+	*BaseReceiver
+}
+
+type ReceiverData struct {
+	*BaseReceiver
 }
 
 // Source
