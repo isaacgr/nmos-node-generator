@@ -22,17 +22,29 @@ The config file should have a syntax similar to below
   "resource": {
     "nodes": 1,
     "devices": 1,
-    "sources": 1,
-    "senders": 1,
-    "receivers": 1,
+    "sources": {
+      "generic": 1,
+      "audio": 1,
+      "data": 1
+    },
+    "senders": {
+      "video": 1,
+      "audio": 1,
+      "data": 1
+    },
+    "receivers": {
+      "video": 1,
+      "audio": 1,
+      "data": 1
+    },
     "flows": 1
   },
   "registry": {
-    "ip": "172.16.10.10",
-    "port": 7893,
+    "ip": "localhost",
+    "port": 8010,
     "scheme": "http",
     "version": "1.2"
   },
-  "post_delay": 0 // delay between resource posts
+  "resource_post_delay": 0
 }
 ```
