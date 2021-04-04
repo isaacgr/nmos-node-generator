@@ -1,9 +1,9 @@
-package configuration
+package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -50,18 +50,18 @@ func ParseConfig(fname string) Config {
 	c := Config{}
 	configFile, err := os.Open(fname)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 
 	byteValue, err := ioutil.ReadAll(configFile)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 	err = json.Unmarshal(byteValue, &c)
 	if err != nil {
-		fmt.Println("Unable to read config file")
+		log.Fatal("Unable to read config file")
 	}
 
 	return c

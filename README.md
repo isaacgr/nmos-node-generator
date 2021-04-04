@@ -12,7 +12,7 @@ A tool to generate fake NMOS nodes for general or scale testing of a registry. W
 
 ```
 --config string
-        Conifg file containing resource generation info (default "configs/config.json")
+        Conifg file containing resource generation info (default "config.json")
 ```
 
 The config file should have a syntax similar to below
