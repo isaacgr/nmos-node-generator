@@ -27,6 +27,7 @@ func main() {
 	// var KEEPALIVE_URL = "/"
 	var ng sync.WaitGroup
 	var dg sync.WaitGroup
+	var sg sync.WaitGroup
 
 	numNodes := config.ResourceQuantities.Nodes
 	if numNodes == 0 {
@@ -39,14 +40,18 @@ func main() {
 	numVideoReceivers := config.ResourceQuantities.Receivers.Video
 	numAudioReceivers := config.ResourceQuantities.Receivers.Audio
 	numDataReceivers := config.ResourceQuantities.Receivers.Data
-	numGenericSources := config.ResourceQuantities.Sources.Generic
-	numAudioSources := config.ResourceQuantities.Sources.Audio
-	numDataSources := config.ResourceQuantities.Sources.Data
+	numGenericSources := config.ResourceQuantities.Sources.Generic.Count
+	numAudioSources := config.ResourceQuantities.Sources.Audio.Count
+	numDataSources := config.ResourceQuantities.Sources.Data.Count
+	videoFlowType := config.ResourceQuantities.Sources.Generic.Flows.MediaType
+	audioFlowType := config.ResourceQuantities.Sources.Audio.Flows.MediaType
+	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
 	nodes := util.BuildNodes(numNodes)
 	devices := util.BuildDevices(nodes, numDevices)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources)
+	flows := util.BuildFlows(devices, sources, videoFlowType, audioFlowType, dataFlowType)
 
 	k := make(chan string)
 	for _, n := range nodes {
@@ -59,9 +64,11 @@ func main() {
 		go NodeKeepalive(c, KEEPALIVE_URL+n.ID, k, &ng)
 	}
 	dg.Add(1)
+	sg.Add(1)
 	go client.RegisterDevices(c, devices, &ng, &dg)
 	go client.RegisterRecievers(c, receivers, &dg)
 	go client.RegisterSources(c, sources, &dg)
+	go client.RegisterFlows(c, flows, &sg)
 
 	for n := range k {
 		go func(n string) {

@@ -2,6 +2,7 @@ package node
 
 type Source interface {
 	BuildResource(d Device, index int)
+	getId() string
 }
 
 func (s *SourceGeneric) BuildResource(d Device, index int) {
@@ -20,4 +21,14 @@ func (s *SourceData) BuildResource(d Device, index int) {
 	label := getResourceLabel("TestDataSource", index)
 	s.BaseSource = SetBaseSourceProperties(label, "NMOS Test Source Data", d)
 	s.Format = DataFormat
+}
+
+func (s *SourceGeneric) getId() string {
+	return s.ID
+}
+func (s *SourceAudio) getId() string {
+	return s.ID
+}
+func (s *SourceData) getId() string {
+	return s.ID
 }

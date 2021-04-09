@@ -1,6 +1,10 @@
 package util
 
-import "github.com/isaacgr/nmos-node-generator/node"
+import (
+	"log"
+
+	"github.com/isaacgr/nmos-node-generator/node"
+)
 
 func BuildNodes(nn int) []node.Node {
 	nodes := []node.Node{}
@@ -66,4 +70,44 @@ func BuildSources(d []node.Device, ngs int, nas int, nds int) []node.Source {
 		}
 	}
 	return sources
+}
+
+func BuildFlows(d []node.Device, s []node.Source, vf string, af string, df string) []node.Flow {
+	flows := []node.Flow{}
+	for j := 0; j < len(d); j++ {
+		for i := 0; i < len(s); i++ {
+			switch s[i].(type) {
+			case *node.SourceGeneric:
+				if vf == "raw" {
+					f := node.FlowVideoRaw{}
+					f.BuildResource(d[i], s[i], i+1)
+					flows = append(flows, &f)
+				} else if vf == "mux" {
+					f := node.FlowMux{}
+					f.BuildResource(d[i], s[i], i+1)
+					flows = append(flows, &f)
+				} else {
+					log.Fatal("Invalid video flow type")
+				}
+			case *node.SourceAudio:
+				f := node.FlowAudioRaw{}
+				f.BuildResource(d[i], s[i], i+1)
+				f.MediaType = node.AudioMediaTypes[af]
+				flows = append(flows, &f)
+			case *node.SourceData:
+				if df == "smpte291" {
+					f := node.FlowSdiAncData{}
+					f.BuildResource(d[i], s[i], i+1)
+					flows = append(flows, &f)
+				} else if df == "json" {
+					f := node.FlowJsonData{}
+					f.BuildResource(d[i], s[i], i+1)
+					flows = append(flows, &f)
+				} else {
+					log.Fatal("Invalid data flow type")
+				}
+			}
+		}
+	}
+	return flows
 }

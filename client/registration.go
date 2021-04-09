@@ -64,3 +64,14 @@ func RegisterSources(client NmosClient, sources []node.Source, dg *sync.WaitGrou
 		RegisterResource(client, data)
 	}
 }
+
+func RegisterFlows(client NmosClient, flows []node.Flow, sg *sync.WaitGroup) {
+	sg.Wait()
+	for _, f := range flows {
+		data := Data{
+			"flow",
+			f,
+		}
+		RegisterResource(client, data)
+	}
+}

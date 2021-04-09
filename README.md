@@ -23,21 +23,48 @@ The config file should have a syntax similar to below
     "nodes": 1,
     "devices": 1,
     "sources": {
-      "generic": 1,
-      "audio": 1,
-      "data": 1
+      "generic": {
+        "count": 1,
+        "flows": {
+          "media_type": "raw",
+          "sender": {
+            "sender_iface": [
+              1,
+              2
+            ]
+          }
+        }
+      },
+      "audio": {
+        "count": 1,
+        "flows": {
+          "media_type": "audio/L16",
+          "sender": {
+            "sender_iface": [
+              1,
+              2
+            ]
+          }
+        }
+      }
     },
-    "senders": {
-      "video": 1,
-      "audio": 1,
-      "data": 1
-    },
-    "receivers": {
-      "video": 1,
-      "audio": 1,
-      "data": 1
-    },
-    "flows": 1
+    "data": {
+      "count": 1,
+      "flows": {
+        "media_type": "smpte291",
+        "sender": {
+          "sender_iface": [
+            1,
+            2
+          ]
+        }
+      }
+    }
+  },
+  "receivers": {
+    "video": 1,
+    "audio": 1,
+    "data": 1
   },
   "registry": {
     "ip": "localhost",

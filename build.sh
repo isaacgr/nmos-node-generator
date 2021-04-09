@@ -1,2 +1,6 @@
 #!/bin/bash
-go build -o /var/www/nmos-node-generator/builds/nmos-node-generator
+
+go build .
+mv nmos-node-generator /var/www/nmos-node-generator/
+cp README.md /var/www/nmos-node-generator/
+cp config.json /var/www/nmos-node-generator/

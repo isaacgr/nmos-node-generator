@@ -13,10 +13,30 @@ type Config struct {
 	Delay              int                `json:"node_post_delay"`
 }
 
+type FlowResource struct {
+	MediaType string         `json:"media_type"`
+	Sender    SenderResource `json:"sender"`
+}
+
+type GenericSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
+type AudioSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
+type DataSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
 type SourceResource struct {
-	Generic int `json:"generic"`
-	Audio   int `json:"audio"`
-	Data    int `json:"data"`
+	Generic GenericSource `json:"generic"`
+	Audio   AudioSource   `json:"audio"`
+	Data    DataSource    `json:"data"`
 }
 
 type ReceiverResource struct {
@@ -26,17 +46,13 @@ type ReceiverResource struct {
 }
 
 type SenderResource struct {
-	Video int `json:"video"`
-	Audio int `json:"audio"`
-	Data  int `json:"data"`
+	Iface []int `json:"sender_iface"`
 }
 
 type ResourceQuantities struct {
 	Nodes     int              `json:"nodes"`
 	Devices   int              `json:"devices"`
-	Senders   SenderResource   `json:"senders"`
 	Receivers ReceiverResource `json:"receivers"`
-	Flows     int              `json:"flows"`
 	Sources   SourceResource   `json:"sources"`
 }
 

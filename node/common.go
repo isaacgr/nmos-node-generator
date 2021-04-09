@@ -34,7 +34,7 @@ func SetBaseSourceProperties(label string, description string, d Device) *BaseSo
 	return &bs
 }
 
-func SetBaseFlowProperties(label string, description string, d Device, s BaseSource) *BaseFlow {
+func SetBaseFlowProperties(label string, description string, d Device, sId string) *BaseFlow {
 	r := SetBaseResourceProperties(label, description)
 	bf := BaseFlow{}
 	bf.BaseResource = r
@@ -43,7 +43,7 @@ func SetBaseFlowProperties(label string, description string, d Device, s BaseSou
 		2,
 	}
 	bf.DeviceId = d.ID
-	bf.SourceID = s.ID
+	bf.SourceID = sId
 	return &bf
 }
 

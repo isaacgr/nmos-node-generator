@@ -34,7 +34,7 @@ func (r *ReceiverAudio) BuildResource(n Node, d *Device, index int) {
 	label := getResourceLabel("TestReceiverAudio", index)
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Receiver")
 	r.Format = AudioFormat
-	r.Caps.MediaTypes = append(r.Caps.MediaTypes, AudioMediaTypes[16])
+	r.Caps.MediaTypes = append(r.Caps.MediaTypes, AudioMediaTypes["audio/L16"])
 	d.Receivers = append(d.Receivers, r.ID)
 
 }

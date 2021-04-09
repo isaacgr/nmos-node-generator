@@ -6,7 +6,7 @@ func (d *Device) BuildResource(n Node, index int) {
 	d.NodeId = n.ID
 	c := Controls{
 		n.Href,
-		"urn:x-manufacturer:control:generic",
+		"urn:x-nmos:control:sr-ctrl/v1.0",
 		false,
 	}
 	d.Type = "urn:x-nmos:device:generic"

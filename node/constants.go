@@ -1,7 +1,7 @@
 package node
 
 type videoMediaMap map[string]string
-type audioMediaMap map[int]string
+type audioMediaMap map[string]string
 type dataMediaMap map[string]string
 type muxMediaMap map[string]string
 type interlaceModes map[string]string
@@ -16,10 +16,10 @@ var VideoMediaTypes = videoMediaMap{
 	"vc2":  "video/vc2",
 }
 var AudioMediaTypes = audioMediaMap{
-	24: "audio/L24",
-	20: "audio/L20",
-	16: "audio/L16",
-	8:  "audio/L8",
+	"audio/L24": "audio/L24",
+	"audio/L20": "audio/L20",
+	"audio/L16": "audio/L16",
+	"audio/L8":  "audio/L8",
 }
 var DataMediaTypes = dataMediaMap{
 	"smpte291": "video/smpte291",
