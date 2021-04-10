@@ -69,12 +69,14 @@ func (f *FlowJsonData) BuildResource(d Device, s Source, index int) {
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS JSON Data Flow", d, s.getId())
 	f.MediaType = DataMediaTypes["json"]
 	f.EventType = "boolean"
+	f.Format = DataFormat
 }
 
 func (f *FlowSdiAncData) BuildResource(d Device, s Source, index int) {
 	label := getResourceLabel("TestFlowSdiAncData", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS SDI Anc Data Flow", d, s.getId())
 	f.MediaType = DataMediaTypes["smpte291"]
+	f.Format = DataFormat
 }
 
 func (f *FlowMux) BuildResource(d Device, s Source, index int) {
@@ -87,21 +89,27 @@ func (f *FlowMux) BuildResource(d Device, s Source, index int) {
 func (f *FlowVideoRaw) getId() string {
 	return f.ID
 }
+
 func (f *FlowMux) getId() string {
 	return f.ID
 }
+
 func (f *FlowAudioRaw) getId() string {
 	return f.ID
 }
+
 func (f *FlowAudioCoded) getId() string {
 	return f.ID
 }
+
 func (f *FlowData) getId() string {
 	return f.ID
 }
+
 func (f *FlowJsonData) getId() string {
 	return f.ID
 }
+
 func (f *FlowSdiAncData) getId() string {
 	return f.ID
 }
