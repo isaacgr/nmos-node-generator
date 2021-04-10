@@ -15,6 +15,15 @@ func (s *SourceAudio) BuildResource(d Device, index int) {
 	label := getResourceLabel("TestAudioSource", index)
 	s.BaseSource = SetBaseSourceProperties(label, "NMOS Test Source Audio", d)
 	s.Format = AudioFormat
+	c1 := SourceChannels{
+		"Audio 1",
+		SourceChannelSymbols["L"],
+	}
+	c2 := SourceChannels{
+		"Audio 2",
+		SourceChannelSymbols["R"],
+	}
+	s.Channels = append(s.Channels, c1, c2)
 }
 
 func (s *SourceData) BuildResource(d Device, index int) {
