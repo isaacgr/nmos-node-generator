@@ -54,8 +54,9 @@ func RegisterRecievers(client NmosClient, receivers []node.Receiver, dg *sync.Wa
 	}
 }
 
-func RegisterSources(client NmosClient, sources []node.Source, dg *sync.WaitGroup) {
+func RegisterSources(client NmosClient, sources []node.Source, dg *sync.WaitGroup, sg *sync.WaitGroup) {
 	dg.Wait()
+	defer sg.Done()
 	for _, s := range sources {
 		data := Data{
 			"source",
@@ -65,8 +66,9 @@ func RegisterSources(client NmosClient, sources []node.Source, dg *sync.WaitGrou
 	}
 }
 
-func RegisterFlows(client NmosClient, flows []node.Flow, sg *sync.WaitGroup) {
+func RegisterFlows(client NmosClient, flows []node.Flow, sg *sync.WaitGroup, fg *sync.WaitGroup) {
 	sg.Wait()
+	defer fg.Done()
 	for _, f := range flows {
 		data := Data{
 			"flow",
