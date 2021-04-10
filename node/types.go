@@ -251,6 +251,7 @@ type FlowData struct {
 
 type FlowJsonData struct {
 	*BaseFlow
+	Format    string `json:"format"`
 	MediaType string `json:"media_type"`
 	EventType string `json:"event_type"`
 }
