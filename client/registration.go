@@ -14,7 +14,6 @@ type Data struct {
 
 func RegisterResource(client NmosClient, r interface{}) {
 	var REGISTER_URL = "/x-nmos/registration/" + client.RegistryVersion + "/resource"
-	// var REGISTER_URL = "/"
 	request, err := client.PostWith(REGISTER_URL, r)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -73,6 +72,17 @@ func RegisterFlows(client NmosClient, flows []node.Flow, sg *sync.WaitGroup, fg 
 		data := Data{
 			"flow",
 			f,
+		}
+		RegisterResource(client, data)
+	}
+}
+
+func RegisterSenders(client NmosClient, senders []node.Sender, fg *sync.WaitGroup) {
+	fg.Wait()
+	for _, s := range senders {
+		data := Data{
+			"sender",
+			s,
 		}
 		RegisterResource(client, data)
 	}

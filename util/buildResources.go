@@ -30,24 +30,55 @@ func BuildDevices(n []node.Node, nd int) []node.Device {
 
 func BuildReceivers(n []node.Node, d []node.Device, nvr int, nar int, ndr int) []node.Receiver {
 	receivers := []node.Receiver{}
-	for j := 0; j < len(d); j++ {
-		for i := 0; i < nvr; i++ {
-			receiver := node.ReceiverVideo{}
-			receiver.BuildResource(n[i], &d[i], i+1)
-			receivers = append(receivers, &receiver)
-		}
-		for i := 0; i < nar; i++ {
-			receiver := node.ReceiverAudio{}
-			receiver.BuildResource(n[i], &d[i], i+1)
-			receivers = append(receivers, &receiver)
-		}
-		for i := 0; i < ndr; i++ {
-			receiver := node.ReceiverData{}
-			receiver.BuildResource(n[i], &d[i], i+1)
-			receivers = append(receivers, &receiver)
+	for k := 0; k < len(n); k++ {
+		for j := 0; j < len(d); j++ {
+			for i := 0; i < nvr; i++ {
+				receiver := node.ReceiverVideo{}
+				receiver.BuildResource(n[k], &d[j], i+1)
+				receivers = append(receivers, &receiver)
+			}
+			for i := 0; i < nar; i++ {
+				receiver := node.ReceiverAudio{}
+				receiver.BuildResource(n[k], &d[j], i+1)
+				receivers = append(receivers, &receiver)
+			}
+			for i := 0; i < ndr; i++ {
+				receiver := node.ReceiverData{}
+				receiver.BuildResource(n[k], &d[j], i+1)
+				receivers = append(receivers, &receiver)
+			}
 		}
 	}
 	return receivers
+}
+
+func BuildSenders(n []node.Node, d []node.Device, f []node.Flow) []node.Sender {
+	senders := []node.Sender{}
+	for k := 0; k < len(n); k++ {
+		for j := 0; j < len(d); j++ {
+			for x := 0; x < len(f); x++ {
+				switch f[x].(type) {
+				case *node.FlowVideoRaw:
+					sender := node.SenderVideo{}
+					sender.BuildResource(n[k], d[j], f[x], x+1)
+					senders = append(senders, &sender)
+				case *node.FlowMux:
+					sender := node.SenderVideo{}
+					sender.BuildResource(n[k], d[j], f[x], x+1)
+					senders = append(senders, &sender)
+				case *node.FlowAudioRaw:
+					sender := node.SenderAudio{}
+					sender.BuildResource(n[k], d[j], f[x], x+1)
+					senders = append(senders, &sender)
+				default:
+					sender := node.SenderData{}
+					sender.BuildResource(n[k], d[j], f[x], x+1)
+					senders = append(senders, &sender)
+				}
+			}
+		}
+	}
+	return senders
 }
 
 func BuildSources(d []node.Device, ngs int, nas int, nds int) []node.Source {
@@ -55,17 +86,17 @@ func BuildSources(d []node.Device, ngs int, nas int, nds int) []node.Source {
 	for j := 0; j < len(d); j++ {
 		for i := 0; i < ngs; i++ {
 			source := node.SourceGeneric{}
-			source.BuildResource(d[i], i+1)
+			source.BuildResource(d[j], i+1)
 			sources = append(sources, &source)
 		}
 		for i := 0; i < nas; i++ {
 			source := node.SourceAudio{}
-			source.BuildResource(d[i], i+1)
+			source.BuildResource(d[j], i+1)
 			sources = append(sources, &source)
 		}
 		for i := 0; i < nds; i++ {
 			source := node.SourceData{}
-			source.BuildResource(d[i], i+1)
+			source.BuildResource(d[j], i+1)
 			sources = append(sources, &source)
 		}
 	}
@@ -80,28 +111,28 @@ func BuildFlows(d []node.Device, s []node.Source, vf string, af string, df strin
 			case *node.SourceGeneric:
 				if vf == "raw" {
 					f := node.FlowVideoRaw{}
-					f.BuildResource(d[i], s[i], i+1)
+					f.BuildResource(d[j], s[i], i+1)
 					flows = append(flows, &f)
 				} else if vf == "mux" {
 					f := node.FlowMux{}
-					f.BuildResource(d[i], s[i], i+1)
+					f.BuildResource(d[j], s[i], i+1)
 					flows = append(flows, &f)
 				} else {
 					log.Fatal("Invalid video flow type")
 				}
 			case *node.SourceAudio:
 				f := node.FlowAudioRaw{}
-				f.BuildResource(d[i], s[i], i+1)
+				f.BuildResource(d[j], s[i], i+1)
 				f.MediaType = node.AudioMediaTypes[af]
 				flows = append(flows, &f)
 			case *node.SourceData:
 				if df == "smpte291" {
 					f := node.FlowSdiAncData{}
-					f.BuildResource(d[i], s[i], i+1)
+					f.BuildResource(d[j], s[i], i+1)
 					flows = append(flows, &f)
 				} else if df == "json" {
 					f := node.FlowJsonData{}
-					f.BuildResource(d[i], s[i], i+1)
+					f.BuildResource(d[j], s[i], i+1)
 					flows = append(flows, &f)
 				} else {
 					log.Fatal("Invalid data flow type")

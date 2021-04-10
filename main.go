@@ -24,10 +24,10 @@ func main() {
 		"v1.2",
 	}
 	var KEEPALIVE_URL = "/x-nmos/registration/" + c.RegistryVersion + "/health/nodes/"
-	// var KEEPALIVE_URL = "/"
 	var ng sync.WaitGroup
 	var dg sync.WaitGroup
 	var sg sync.WaitGroup
+	var fg sync.WaitGroup
 
 	numNodes := config.ResourceQuantities.Nodes
 	if numNodes == 0 {
@@ -52,6 +52,7 @@ func main() {
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources)
 	flows := util.BuildFlows(devices, sources, videoFlowType, audioFlowType, dataFlowType)
+	senders := util.BuildSenders(nodes, devices, flows)
 
 	k := make(chan string)
 	for _, n := range nodes {
@@ -65,10 +66,12 @@ func main() {
 	}
 	dg.Add(1)
 	sg.Add(1)
+	fg.Add(1)
 	go client.RegisterDevices(c, devices, &ng, &dg)
 	go client.RegisterRecievers(c, receivers, &dg)
-	go client.RegisterSources(c, sources, &dg)
-	go client.RegisterFlows(c, flows, &sg)
+	go client.RegisterSources(c, sources, &dg, &sg)
+	go client.RegisterFlows(c, flows, &sg, &fg)
+	go client.RegisterSenders(c, senders, &fg)
 
 	for n := range k {
 		go func(n string) {
