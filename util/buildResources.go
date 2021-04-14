@@ -60,19 +60,19 @@ func BuildSenders(n []node.Node, d []node.Device, f []node.Flow) []node.Sender {
 				switch f[x].(type) {
 				case *node.FlowVideoRaw:
 					sender := node.SenderVideo{}
-					sender.BuildResource(n[k], d[j], f[x], x+1)
+					sender.BuildResource(n[k], &d[j], f[x], x+1)
 					senders = append(senders, &sender)
 				case *node.FlowMux:
 					sender := node.SenderVideo{}
-					sender.BuildResource(n[k], d[j], f[x], x+1)
+					sender.BuildResource(n[k], &d[j], f[x], x+1)
 					senders = append(senders, &sender)
 				case *node.FlowAudioRaw:
 					sender := node.SenderAudio{}
-					sender.BuildResource(n[k], d[j], f[x], x+1)
+					sender.BuildResource(n[k], &d[j], f[x], x+1)
 					senders = append(senders, &sender)
 				default:
 					sender := node.SenderData{}
-					sender.BuildResource(n[k], d[j], f[x], x+1)
+					sender.BuildResource(n[k], &d[j], f[x], x+1)
 					senders = append(senders, &sender)
 				}
 			}
