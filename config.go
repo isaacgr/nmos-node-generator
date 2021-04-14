@@ -39,14 +39,20 @@ type SourceResource struct {
 	Data    DataSource    `json:"data"`
 }
 
+type ReceiverDetails struct {
+	Count     int    `json:"count"`
+	MediaType string `json:"media_type"`
+	Iface     []int  `json:"iface"`
+}
+
 type ReceiverResource struct {
-	Video int `json:"video"`
-	Audio int `json:"audio"`
-	Data  int `json:"data"`
+	Video ReceiverDetails `json:"video"`
+	Audio ReceiverDetails `json:"audio"`
+	Data  ReceiverDetails `json:"data"`
 }
 
 type SenderResource struct {
-	Iface []int `json:"sender_iface"`
+	Iface []int `json:"iface"`
 }
 
 type ResourceQuantities struct {

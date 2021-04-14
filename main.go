@@ -37,9 +37,9 @@ func main() {
 	if numDevices == 0 {
 		log.Fatal("Must define at least one device")
 	}
-	numVideoReceivers := config.ResourceQuantities.Receivers.Video
-	numAudioReceivers := config.ResourceQuantities.Receivers.Audio
-	numDataReceivers := config.ResourceQuantities.Receivers.Data
+	numVideoReceivers := config.ResourceQuantities.Receivers.Video.Count
+	numAudioReceivers := config.ResourceQuantities.Receivers.Audio.Count
+	numDataReceivers := config.ResourceQuantities.Receivers.Data.Count
 	numGenericSources := config.ResourceQuantities.Sources.Generic.Count
 	numAudioSources := config.ResourceQuantities.Sources.Audio.Count
 	numDataSources := config.ResourceQuantities.Sources.Data.Count

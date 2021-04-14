@@ -8,7 +8,7 @@
         "flows": {
           "media_type": "raw",
           "sender": {
-            "sender_iface": [
+            "iface": [
               1,
               2
             ]
@@ -20,7 +20,7 @@
         "flows": {
           "media_type": "audio/L16",
           "sender": {
-            "sender_iface": [
+            "iface": [
               1,
               2
             ]
@@ -32,7 +32,7 @@
         "flows": {
           "media_type": "smpte291",
           "sender": {
-            "sender_iface": [
+            "iface": [
               1,
               2
             ]
@@ -41,9 +41,30 @@
       }
     },
     "receivers": {
-      "video": 1,
-      "audio": 1,
-      "data": 1
+      "video": {
+        "count": 1,
+        "iface": [
+          1,
+          2
+        ],
+        "media_type": "raw"
+      },
+      "audio": {
+        "count": 1,
+        "iface": [
+          1,
+          2
+        ],
+        "media_type": "audio/L16"
+      },
+      "data": {
+        "count": 1,
+        "iface": [
+          1,
+          2
+        ],
+        "media_type": "smpte291"
+      }
     }
   },
   "registry": {
@@ -51,6 +72,5 @@
     "port": 8010,
     "scheme": "http",
     "version": "1.2"
-  },
-  "resource_post_delay": 0
+  }
 }
