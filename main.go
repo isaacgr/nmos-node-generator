@@ -7,15 +7,20 @@ import (
 	"time"
 
 	"github.com/isaacgr/nmos-node-generator/client"
+	"github.com/isaacgr/nmos-node-generator/config"
 	"github.com/isaacgr/nmos-node-generator/util"
 )
 
-var configFilename = flag.String("config", "config.json", "Conifg file containing resource generation info")
+var clientCertFile = flag.String("clientcert", "", "Optional, the name of the client's certificate file")
+var clientKeyFile = flag.String("clientkey", "", "Optional, the file name of the clients's private key file")
 
 func main() {
 
 	flag.Parse()
-	config := ParseConfig(*configFilename)
+	client.ClientCertFile = clientCertFile
+	client.ClientKeyFile = clientKeyFile
+
+	config := config.New()
 	baseUrl := config.Registry.Scheme + "://" + config.Registry.IP
 	port := config.Registry.Port
 	c := client.NmosClient{

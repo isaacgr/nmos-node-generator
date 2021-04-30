@@ -1,16 +1,17 @@
 package node
 
+import "github.com/isaacgr/nmos-node-generator/config"
+
 type Sender interface {
 	BuildResource(n Node, d *Device, f Flow, index int)
 }
 
-func BuildBaseSender(n Node, d *Device, f Flow) *BaseSender {
+var SenderConfig = config.New().ResourceQuantities.Sources
+
+func BuildBaseSender(n Node, d *Device, f Flow, b []int) *BaseSender {
 	s := BaseSender{}
-	for i, iface := range n.Interfaces {
-		s.InterfaceBindings = append(s.InterfaceBindings, iface.Name)
-		if i == 1 {
-			break
-		}
+	for i := range b {
+		s.InterfaceBindings = append(s.InterfaceBindings, n.Interfaces[i].Name)
 	}
 	s.DeviceId = d.ID
 	s.FlowId = f.getId()
@@ -19,20 +20,20 @@ func BuildBaseSender(n Node, d *Device, f Flow) *BaseSender {
 }
 
 func (s *SenderVideo) BuildResource(n Node, d *Device, f Flow, index int) {
-	s.BaseSender = BuildBaseSender(n, d, f)
+	s.BaseSender = BuildBaseSender(n, d, f, SenderConfig.Generic.Flows.Sender.Iface)
 	label := getResourceLabel("TestSenderVideo", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Sender")
 	d.Senders = append(d.Senders, s.ID)
 }
 
 func (s *SenderAudio) BuildResource(n Node, d *Device, f Flow, index int) {
-	s.BaseSender = BuildBaseSender(n, d, f)
+	s.BaseSender = BuildBaseSender(n, d, f, SenderConfig.Audio.Flows.Sender.Iface)
 	label := getResourceLabel("TestSenderAudio", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Sender")
 	d.Senders = append(d.Senders, s.ID)
 }
 func (s *SenderData) BuildResource(n Node, d *Device, f Flow, index int) {
-	s.BaseSender = BuildBaseSender(n, d, f)
+	s.BaseSender = BuildBaseSender(n, d, f, SenderConfig.Data.Flows.Sender.Iface)
 	label := getResourceLabel("TestSenderData", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Sender")
 	d.Senders = append(d.Senders, s.ID)
