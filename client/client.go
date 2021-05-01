@@ -2,12 +2,14 @@ package client
 
 import (
 	"bytes"
+	"crypto/tls"
 	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/helloeave/json"
 )
@@ -30,6 +32,9 @@ type stop struct {
 	error
 }
 
+var ClientCertFile *string
+var ClientKeyFile *string
+
 func (c NmosClient) Post(endpoint string) (*http.Request, error) {
 	return http.NewRequest(http.MethodPost, c.BaseUrl+":"+strconv.Itoa(c.Port)+endpoint, bytes.NewBuffer([]byte{}))
 }
@@ -43,8 +48,25 @@ func (c NmosClient) PostWith(endpoint string, params interface{}) (*http.Request
 }
 
 func (c NmosClient) Do(request *http.Request) (*HttpResponse, error) {
+	var client *http.Client
+	var cert tls.Certificate
+	var err error
 	request.Header.Set("Content-Type", "application/json")
-	client := &http.Client{}
+
+	if request.URL.Scheme == "https" {
+		cert, err = tls.LoadX509KeyPair(*ClientCertFile, *ClientKeyFile)
+		if err != nil {
+			log.Fatalf("Error creating x509 keypair. Error [%s]", err)
+		}
+		t := &http.Transport{
+			TLSClientConfig: &tls.Config{
+				Certificates: []tls.Certificate{cert},
+			},
+		}
+		client = &http.Client{Transport: t, Timeout: 20 * time.Second}
+	} else {
+		client = &http.Client{Timeout: 20 * time.Second}
+	}
 	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
