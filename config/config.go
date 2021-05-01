@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-var configFilename = flag.String("config", "config.json", "Conifg file containing resource generation info")
+var ConfigFilename *string
 var config *Config = nil
 var once sync.Once
 
@@ -23,7 +23,7 @@ func New() *Config {
 func parseConfig() *Config {
 	flag.Parse()
 	c := &Config{}
-	configFile, err := os.Open(*configFilename)
+	configFile, err := os.Open(*ConfigFilename)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
