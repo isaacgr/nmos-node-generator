@@ -6,7 +6,9 @@ type Receiver interface {
 	BuildResource(n Node, d *Device, index int)
 }
 
-var ReceiverConfig = config.New().ResourceQuantities.Receivers
+func getReceiverConfig() config.ReceiverResource {
+	return config.New().ResourceQuantities.Receivers
+}
 
 func BuildBaseReceiver(n Node, d *Device, b []int) *BaseReceiver {
 	r := BaseReceiver{}
@@ -21,31 +23,31 @@ func BuildBaseReceiver(n Node, d *Device, b []int) *BaseReceiver {
 }
 
 func (r *ReceiverVideo) BuildResource(n Node, d *Device, index int) {
-	r.BaseReceiver = BuildBaseReceiver(n, d, ReceiverConfig.Video.Iface)
+	r.BaseReceiver = BuildBaseReceiver(n, d, getReceiverConfig().Video.Iface)
 	label := getResourceLabel("TestReceiverVideo", index)
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Receiver")
 	r.Format = VideoFormat
-	r.Caps.MediaTypes = append(r.Caps.MediaTypes, VideoMediaTypes[ReceiverConfig.Video.MediaType])
+	r.Caps.MediaTypes = append(r.Caps.MediaTypes, VideoMediaTypes[getReceiverConfig().Video.MediaType])
 	d.Receivers = append(d.Receivers, r.ID)
 
 }
 
 func (r *ReceiverAudio) BuildResource(n Node, d *Device, index int) {
-	r.BaseReceiver = BuildBaseReceiver(n, d, ReceiverConfig.Audio.Iface)
+	r.BaseReceiver = BuildBaseReceiver(n, d, getReceiverConfig().Audio.Iface)
 	label := getResourceLabel("TestReceiverAudio", index)
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Receiver")
 	r.Format = AudioFormat
-	r.Caps.MediaTypes = append(r.Caps.MediaTypes, AudioMediaTypes[ReceiverConfig.Audio.MediaType])
+	r.Caps.MediaTypes = append(r.Caps.MediaTypes, AudioMediaTypes[getReceiverConfig().Audio.MediaType])
 	d.Receivers = append(d.Receivers, r.ID)
 
 }
 
 func (r *ReceiverData) BuildResource(n Node, d *Device, index int) {
-	r.BaseReceiver = BuildBaseReceiver(n, d, ReceiverConfig.Data.Iface)
+	r.BaseReceiver = BuildBaseReceiver(n, d, getReceiverConfig().Data.Iface)
 	label := getResourceLabel("TestReceiverData", index)
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Receiver")
 	r.Format = DataFormat
-	r.Caps.MediaTypes = append(r.Caps.MediaTypes, DataMediaTypes[ReceiverConfig.Data.MediaType])
+	r.Caps.MediaTypes = append(r.Caps.MediaTypes, DataMediaTypes[getReceiverConfig().Data.MediaType])
 	d.Receivers = append(d.Receivers, r.ID)
 
 }

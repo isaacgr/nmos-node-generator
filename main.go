@@ -13,10 +13,12 @@ import (
 
 var clientCertFile = flag.String("clientcert", "", "Optional, the name of the client's certificate file")
 var clientKeyFile = flag.String("clientkey", "", "Optional, the file name of the clients's private key file")
+var configFile = flag.String("config", "config.json", "Conifg file containing resource generation info")
 
 func main() {
 
 	flag.Parse()
+	config.ConfigFilename = configFile
 	client.ClientCertFile = clientCertFile
 	client.ClientKeyFile = clientKeyFile
 
