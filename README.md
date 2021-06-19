@@ -17,6 +17,8 @@ A tool to generate fake NMOS nodes for general or scale testing of a registry. W
 
 The config file should have a syntax similar to below
 
+Use port 443 for https requests
+
 ```json
 {
   "resource": {
@@ -28,10 +30,7 @@ The config file should have a syntax similar to below
         "flows": {
           "media_type": "raw",
           "sender": {
-            "sender_iface": [
-              1,
-              2
-            ]
+            "iface": [1, 2]
           }
         }
       },
@@ -40,38 +39,43 @@ The config file should have a syntax similar to below
         "flows": {
           "media_type": "audio/L16",
           "sender": {
-            "sender_iface": [
-              1,
-              2
-            ]
+            "iface": [1, 2]
+          }
+        }
+      },
+      "data": {
+        "count": 1,
+        "flows": {
+          "media_type": "smpte291",
+          "sender": {
+            "iface": [1, 2]
           }
         }
       }
     },
-    "data": {
-      "count": 1,
-      "flows": {
-        "media_type": "smpte291",
-        "sender": {
-          "sender_iface": [
-            1,
-            2
-          ]
-        }
+    "receivers": {
+      "video": {
+        "count": 1,
+        "iface": [1, 2],
+        "media_type": "raw"
+      },
+      "audio": {
+        "count": 1,
+        "iface": [1, 2],
+        "media_type": "audio/L16"
+      },
+      "data": {
+        "count": 1,
+        "iface": [1, 2],
+        "media_type": "smpte291"
       }
     }
-  },
-  "receivers": {
-    "video": 1,
-    "audio": 1,
-    "data": 1
   },
   "registry": {
     "ip": "localhost",
     "port": 8010,
     "scheme": "http",
     "version": "1.2"
-  },
-  "resource_post_delay": 0
+  }
 }
 ```
