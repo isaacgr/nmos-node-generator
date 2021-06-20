@@ -22,7 +22,10 @@ Use port 443 for https requests
 ```json
 {
   "resource": {
-    "nodes": 1,
+    "nodes": {
+      "count": 1,
+      "num_interfaces": 2
+    },
     "devices": 1,
     "sources": {
       "generic": {
@@ -30,7 +33,10 @@ Use port 443 for https requests
         "flows": {
           "media_type": "raw",
           "sender": {
-            "iface": [1, 2]
+            "iface": [
+              1,
+              2
+            ]
           }
         }
       },
@@ -39,7 +45,10 @@ Use port 443 for https requests
         "flows": {
           "media_type": "audio/L16",
           "sender": {
-            "iface": [1, 2]
+            "iface": [
+              1,
+              2
+            ]
           }
         }
       },
@@ -48,7 +57,10 @@ Use port 443 for https requests
         "flows": {
           "media_type": "smpte291",
           "sender": {
-            "iface": [1, 2]
+            "iface": [
+              1,
+              2
+            ]
           }
         }
       }
@@ -56,17 +68,26 @@ Use port 443 for https requests
     "receivers": {
       "video": {
         "count": 1,
-        "iface": [1, 2],
+        "iface": [
+          1,
+          2
+        ],
         "media_type": "raw"
       },
       "audio": {
         "count": 1,
-        "iface": [1, 2],
+        "iface": [
+          1,
+          2
+        ],
         "media_type": "audio/L16"
       },
       "data": {
         "count": 1,
-        "iface": [1, 2],
+        "iface": [
+          1,
+          2
+        ],
         "media_type": "smpte291"
       }
     }
@@ -75,7 +96,7 @@ Use port 443 for https requests
     "ip": "localhost",
     "port": 8010,
     "scheme": "http",
-    "version": "1.2"
+    "version": "v1.3"
   }
 }
 ```
