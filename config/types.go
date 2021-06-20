@@ -48,15 +48,21 @@ type SenderResource struct {
 	Iface []int `json:"iface"`
 }
 
+type NodeResource struct {
+	Count         int `json:"count"`
+	NumInterfaces int `json:"num_interfaces"`
+}
+
 type ResourceQuantities struct {
-	Nodes     int              `json:"nodes"`
+	Nodes     NodeResource     `json:"nodes"`
 	Devices   int              `json:"devices"`
 	Receivers ReceiverResource `json:"receivers"`
 	Sources   SourceResource   `json:"sources"`
 }
 
 type Registry struct {
-	IP     string `json:"ip"`
-	Port   int    `json:"port"`
-	Scheme string `json:"scheme"`
+	IP      string `json:"ip"`
+	Port    int    `json:"port"`
+	Scheme  string `json:"scheme"`
+	Version string `json:"version"`
 }

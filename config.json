@@ -1,6 +1,9 @@
 {
   "resource": {
-    "nodes": 1,
+    "nodes": {
+      "count": 1,
+      "num_interfaces": 2
+    },
     "devices": 1,
     "sources": {
       "generic": {
@@ -71,6 +74,6 @@
     "ip": "localhost",
     "port": 8010,
     "scheme": "http",
-    "version": "1.2"
+    "version": "v1.3"
   }
 }

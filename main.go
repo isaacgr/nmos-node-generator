@@ -24,7 +24,7 @@ func main() {
 	c := client.NmosClient{
 		baseUrl,
 		port,
-		"v1.2",
+		config.Registry.Version,
 	}
 	var KEEPALIVE_URL = "/x-nmos/registration/" + c.RegistryVersion + "/health/nodes/"
 	var ng sync.WaitGroup
@@ -32,9 +32,13 @@ func main() {
 	var sg sync.WaitGroup
 	var fg sync.WaitGroup
 
-	numNodes := config.ResourceQuantities.Nodes
+	numNodes := config.ResourceQuantities.Nodes.Count
+	numInterfaces := config.ResourceQuantities.Nodes.NumInterfaces
 	if numNodes == 0 {
 		log.Fatal("Must define at least one node")
+	}
+	if numInterfaces == 0 {
+		log.Fatal("Must define at least one interface")
 	}
 	numDevices := config.ResourceQuantities.Devices
 	if numDevices == 0 {
@@ -50,7 +54,7 @@ func main() {
 	audioFlowType := config.ResourceQuantities.Sources.Audio.Flows.MediaType
 	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
-	nodes := util.BuildNodes(numNodes)
+	nodes := util.BuildNodes(numNodes, numInterfaces)
 	devices := util.BuildDevices(nodes, numDevices)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources)

@@ -2,11 +2,12 @@ package node
 
 import (
 	"log"
+	"strconv"
 
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func (n *Node) BuildResource(index int) {
+func (n *Node) BuildResource(index int, numInterfaces int) {
 	// build out node with some default values
 	endpoint := Endpoint{
 		"172.16.220.69",
@@ -23,19 +24,6 @@ func (n *Node) BuildResource(index int) {
 		GenerateMac(),
 	}
 
-	iface1 := NetworkInterface{
-		GenerateMac(),
-		GenerateMac(),
-		"eth0",
-		attachedNetworkDevice,
-	}
-	iface2 := NetworkInterface{
-		GenerateMac(),
-		GenerateMac(),
-		"eth1",
-		attachedNetworkDevice,
-	}
-
 	internalClock := ClockInternal{
 		"clk0",
 		"internal",
@@ -49,6 +37,15 @@ func (n *Node) BuildResource(index int) {
 		true,
 	}
 
+	for i := 0; i < numInterfaces; i++ {
+		n.Interfaces = append(n.Interfaces, NetworkInterface{
+			GenerateMac(),
+			GenerateMac(),
+			"eth" + strconv.Itoa(i),
+			attachedNetworkDevice,
+		})
+	}
+
 	clock1 := &internalClock
 	clock2 := &ptpClock
 	label := getResourceLabel("TestNode", index)
@@ -57,6 +54,5 @@ func (n *Node) BuildResource(index int) {
 	n.Hostname = "TEST-NODE"
 	n.Api.Endpoints = append(n.Api.Endpoints, endpoint)
 	n.Api.Versions = versions
-	n.Interfaces = append(n.Interfaces, iface1, iface2)
 	n.Clocks = append(n.Clocks, clock1, clock2)
 }

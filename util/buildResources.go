@@ -6,11 +6,11 @@ import (
 	"github.com/isaacgr/nmos-node-generator/node"
 )
 
-func BuildNodes(nn int) []node.Node {
+func BuildNodes(nn int, ni int) []node.Node {
 	nodes := []node.Node{}
 	for i := 0; i < nn; i++ {
 		node := node.Node{}
-		node.BuildResource(i + 1)
+		node.BuildResource(i+1, ni)
 		nodes = append(nodes, node)
 	}
 	return nodes
