@@ -2,6 +2,10 @@
 
 A tool to generate fake NMOS nodes for general or scale testing of a registry. Written in go.
 
+### Download
+
+<a>http://dev.irowell.io/nmos-node-generator/</a>
+
 ### Example usage
 
 ```bash
@@ -33,10 +37,7 @@ Use port 443 for https requests
         "flows": {
           "media_type": "raw",
           "sender": {
-            "iface": [
-              1,
-              2
-            ]
+            "iface": [1, 2]
           }
         }
       },
@@ -45,10 +46,7 @@ Use port 443 for https requests
         "flows": {
           "media_type": "audio/L16",
           "sender": {
-            "iface": [
-              1,
-              2
-            ]
+            "iface": [1, 2]
           }
         }
       },
@@ -57,10 +55,7 @@ Use port 443 for https requests
         "flows": {
           "media_type": "smpte291",
           "sender": {
-            "iface": [
-              1,
-              2
-            ]
+            "iface": [1, 2]
           }
         }
       }
@@ -68,26 +63,17 @@ Use port 443 for https requests
     "receivers": {
       "video": {
         "count": 1,
-        "iface": [
-          1,
-          2
-        ],
+        "iface": [1, 2],
         "media_type": "raw"
       },
       "audio": {
         "count": 1,
-        "iface": [
-          1,
-          2
-        ],
+        "iface": [1, 2],
         "media_type": "audio/L16"
       },
       "data": {
         "count": 1,
-        "iface": [
-          1,
-          2
-        ],
+        "iface": [1, 2],
         "media_type": "smpte291"
       }
     }
