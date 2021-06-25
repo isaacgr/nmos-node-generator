@@ -25,6 +25,12 @@ Use port 443 for https requests
 
 ```json
 {
+  "registry": {
+    "ip": "localhost",
+    "port": 8010,
+    "scheme": "http",
+    "version": "v1.3"
+  },
   "resource": {
     "nodes": {
       "count": 1,
@@ -77,12 +83,6 @@ Use port 443 for https requests
         "media_type": "smpte291"
       }
     }
-  },
-  "registry": {
-    "ip": "localhost",
-    "port": 8010,
-    "scheme": "http",
-    "version": "v1.3"
   }
 }
 ```
