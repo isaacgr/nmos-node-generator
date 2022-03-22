@@ -18,6 +18,7 @@ func BuildBaseSender(n Node, d *Device, f Flow, b []int) *BaseSender {
 	s.DeviceId = d.ID
 	s.FlowId = f.getId()
 	s.Transport = SenderTransport
+	s.Manifest = &n.Href
 	return &s
 }
 

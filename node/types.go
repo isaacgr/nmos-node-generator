@@ -100,7 +100,7 @@ type BaseSender struct {
 	Caps              Capabilities       `json:"caps"`
 	Transport         string             `json:"transport"`
 	DeviceId          string             `json:"device_id"`
-	Manifest          string             `json:"manifest_href"`
+	Manifest          *string             `json:"manifest_href"`
 	InterfaceBindings []string           `json:"interface_bindings"`
 	Subscription      SenderSubscription `json:"subscription"`
 }
