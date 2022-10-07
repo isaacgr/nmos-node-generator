@@ -3,7 +3,6 @@ package node
 import (
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"reflect"
 	"strconv"
 	"time"
@@ -15,9 +14,7 @@ import (
 
 func SetBaseResourceProperties(label string, description string) *BaseResource {
 	r := BaseResource{}
-	rnd := rand.New(rand.NewSource(1))
-	uuid.SetRand(rnd)
-	u, _ := uuid.NewRandomFromReader(rnd)
+	u, _ := uuid.NewRandom()
 	r.ID = u.String()
 	r.Version = GenerateVersion()
 	r.Label = label

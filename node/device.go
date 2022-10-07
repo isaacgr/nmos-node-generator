@@ -1,7 +1,7 @@
 package node
 
-func (d *Device) BuildResource(n Node, index int) {
-	label := getResourceLabel("evDevice", index)
+func (d *Device) BuildResource(n Node, index int, nameprefix string) {
+	label := getResourceLabel(nameprefix, index)
 	d.BaseResource = SetBaseResourceProperties(label, "NMOS Test Device")
 	d.NodeId = n.ID
 	c1 := Controls{

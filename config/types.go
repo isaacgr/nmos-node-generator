@@ -3,7 +3,6 @@ package config
 type Config struct {
 	ResourceQuantities ResourceQuantities `json:"resource"`
 	Registry           Registry           `json:"registry"`
-	Delay              int                `json:"node_post_delay"`
 }
 
 type FlowResource struct {
@@ -49,15 +48,17 @@ type SenderResource struct {
 }
 
 type NodeResource struct {
-	Count         int `json:"count"`
-	NumInterfaces int `json:"num_interfaces"`
+	Count         int    `json:"count"`
+	NumInterfaces int    `json:"num_interfaces"`
+	NamePrefix    string `json:"name_prefix"`
 }
 
 type ResourceQuantities struct {
-	Nodes     NodeResource     `json:"nodes"`
-	Devices   int              `json:"devices"`
-	Receivers ReceiverResource `json:"receivers"`
-	Sources   SourceResource   `json:"sources"`
+	Nodes      NodeResource     `json:"nodes"`
+	Devices    int              `json:"devices"`
+	Receivers  ReceiverResource `json:"receivers"`
+	Sources    SourceResource   `json:"sources"`
+	NamePrefix string           `json:"name_prefix"`
 }
 
 type Registry struct {

@@ -7,7 +7,7 @@ import (
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func (n *Node) BuildResource(index int, numInterfaces int) {
+func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 	// build out node with some default values
 	endpoint := Endpoint{
 		"172.16.220.69",
@@ -48,7 +48,7 @@ func (n *Node) BuildResource(index int, numInterfaces int) {
 
 	clock1 := &internalClock
 	clock2 := &ptpClock
-	label := getResourceLabel("evNode", index)
+	label := getResourceLabel(namePrefix, index)
 	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node")
 	n.Href = "http://172.16.221.69:4003/"
 	n.Hostname = "TEST-NODE"
