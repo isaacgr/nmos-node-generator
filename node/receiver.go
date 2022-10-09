@@ -28,7 +28,7 @@ func (r *ReceiverVideo) BuildResource(n Node, d *Device, index int) {
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Receiver")
 	r.Format = VideoFormat
 	r.Caps.MediaTypes = append(r.Caps.MediaTypes, VideoMediaTypes[getReceiverConfig().Video.MediaType])
-	d.Receivers = append(d.Receivers, r.ID)
+	// d.Receivers = append(d.Receivers, r.ID)
 
 }
 
@@ -38,7 +38,7 @@ func (r *ReceiverAudio) BuildResource(n Node, d *Device, index int) {
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Receiver")
 	r.Format = AudioFormat
 	r.Caps.MediaTypes = append(r.Caps.MediaTypes, AudioMediaTypes[getReceiverConfig().Audio.MediaType])
-	d.Receivers = append(d.Receivers, r.ID)
+	// d.Receivers = append(d.Receivers, r.ID)
 
 }
 
@@ -48,6 +48,6 @@ func (r *ReceiverData) BuildResource(n Node, d *Device, index int) {
 	r.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Receiver")
 	r.Format = DataFormat
 	r.Caps.MediaTypes = append(r.Caps.MediaTypes, DataMediaTypes[getReceiverConfig().Data.MediaType])
-	d.Receivers = append(d.Receivers, r.ID)
+	// d.Receivers = append(d.Receivers, r.ID)
 
 }

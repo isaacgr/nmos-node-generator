@@ -26,18 +26,18 @@ func (s *SenderVideo) BuildResource(n Node, d *Device, f Flow, index int) {
 	s.BaseSender = BuildBaseSender(n, d, f, getSenderConfig().Generic.Flows.Sender.Iface)
 	label := getResourceLabel(d.Label+"."+"SenderVideo", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Video Sender")
-	d.Senders = append(d.Senders, s.ID)
+	// d.Senders = append(d.Senders, s.ID)
 }
 
 func (s *SenderAudio) BuildResource(n Node, d *Device, f Flow, index int) {
 	s.BaseSender = BuildBaseSender(n, d, f, getSenderConfig().Audio.Flows.Sender.Iface)
 	label := getResourceLabel(d.Label+"."+"SenderAudio", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Audio Sender")
-	d.Senders = append(d.Senders, s.ID)
+	// d.Senders = append(d.Senders, s.ID)
 }
 func (s *SenderData) BuildResource(n Node, d *Device, f Flow, index int) {
 	s.BaseSender = BuildBaseSender(n, d, f, getSenderConfig().Data.Flows.Sender.Iface)
 	label := getResourceLabel(d.Label+"."+"SenderData", index)
 	s.BaseResource = SetBaseResourceProperties(label, "NMOS Test Data Sender")
-	d.Senders = append(d.Senders, s.ID)
+	// d.Senders = append(d.Senders, s.ID)
 }
