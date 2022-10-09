@@ -54,8 +54,8 @@ func main() {
 	audioFlowType := config.ResourceQuantities.Sources.Audio.Flows.MediaType
 	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
-	nodes := util.BuildNodes(numNodes, numInterfaces)
-	devices := util.BuildDevices(nodes, numDevices)
+	nodes := util.BuildNodes(numNodes, numInterfaces, config.ResourceQuantities.Nodes.NamePrefix)
+	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources)
 	flows := util.BuildFlows(devices, sources, videoFlowType, audioFlowType, dataFlowType)

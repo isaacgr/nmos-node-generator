@@ -34,9 +34,11 @@ Use port 443 for https requests
   "resource": {
     "nodes": {
       "count": 1,
-      "num_interfaces": 2
+      "num_interfaces": 2,
+      "name_prefix": "evNode"
     },
     "devices": 1,
+    "name_prefix": "evDevice",
     "sources": {
       "generic": {
         "count": 1,

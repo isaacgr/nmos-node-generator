@@ -6,22 +6,22 @@ import (
 	"github.com/isaacgr/nmos-node-generator/node"
 )
 
-func BuildNodes(nn int, ni int) []node.Node {
+func BuildNodes(nn int, ni int, nameprefix string) []node.Node {
 	nodes := []node.Node{}
 	for i := 0; i < nn; i++ {
 		node := node.Node{}
-		node.BuildResource(i+1, ni)
+		node.BuildResource(i+1, ni, nameprefix)
 		nodes = append(nodes, node)
 	}
 	return nodes
 }
 
-func BuildDevices(n []node.Node, nd int) []node.Device {
+func BuildDevices(n []node.Node, nd int, nameprefix string) []node.Device {
 	devices := []node.Device{}
 	for i := 0; i < nd; i++ {
 		for j := 0; j < len(n); j++ {
 			device := node.Device{}
-			device.BuildResource(n[j], i+1)
+			device.BuildResource(n[j], i+1, nameprefix)
 			devices = append(devices, device)
 		}
 	}

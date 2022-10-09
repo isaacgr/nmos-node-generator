@@ -8,7 +8,7 @@ type Flow interface {
 }
 
 func (f *FlowVideo) buildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowVideo", index)
+	label := getResourceLabel(d.Label+"."+"FlowVideo", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Video Flow", d, s.getId())
 	f.Format = VideoFormat
 	f.FrameWidth = 1920
@@ -33,7 +33,7 @@ func (f *FlowVideoRaw) BuildResource(d Device, s Source, index int) {
 }
 
 func (f *FlowAudio) buildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowAudio", index)
+	label := getResourceLabel(d.Label+"."+"FlowAudio", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Audio Flow", d, s.getId())
 	f.Format = AudioFormat
 	f.SampleRate = SampleRate{
@@ -58,14 +58,14 @@ func (f *FlowAudioCoded) BuildResource(d Device, s Source, index int) {
 }
 
 func (f *FlowData) BuildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowData", index)
+	label := getResourceLabel(d.Label+"."+"FlowData", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Data Flow", d, s.getId())
 	f.Format = DataFormat
 	f.MediaType, _ = regen.Generate("^[^\\s\\/]+\\/[^\\s\\/]+$")
 }
 
 func (f *FlowJsonData) BuildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowJsonData", index)
+	label := getResourceLabel(d.Label+"."+"FlowJsonData", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS JSON Data Flow", d, s.getId())
 	f.MediaType = DataMediaTypes["json"]
 	f.EventType = "boolean"
@@ -73,14 +73,14 @@ func (f *FlowJsonData) BuildResource(d Device, s Source, index int) {
 }
 
 func (f *FlowSdiAncData) BuildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowSdiAncData", index)
+	label := getResourceLabel(d.Label+"."+"FlowSdiAncData", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS SDI Anc Data Flow", d, s.getId())
 	f.MediaType = DataMediaTypes["smpte291"]
 	f.Format = DataFormat
 }
 
 func (f *FlowMux) BuildResource(d Device, s Source, index int) {
-	label := getResourceLabel("TestFlowMuxData", index)
+	label := getResourceLabel(d.Label+"."+"FlowMuxData", index)
 	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Mux Data Flow", d, s.getId())
 	f.Format = MuxFormat
 	f.MediaType = MuxMediaTypes["2022-6"]

@@ -14,7 +14,8 @@ import (
 
 func SetBaseResourceProperties(label string, description string) *BaseResource {
 	r := BaseResource{}
-	r.ID = uuid.NewString()
+	u, _ := uuid.NewRandom()
+	r.ID = u.String()
 	r.Version = GenerateVersion()
 	r.Label = label
 	r.Description = description
