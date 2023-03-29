@@ -12,10 +12,16 @@ import (
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func SetBaseResourceProperties(label string, description string) *BaseResource {
+func SetBaseResourceProperties(label string, description string, random ...bool) *BaseResource {
 	r := BaseResource{}
-	u, _ := uuid.NewRandom()
-	r.ID = u.String()
+	if len(random) > 0 && !random[0] {
+		namespace := uuid.MustParse("00000000-0000-0000-0000-000000000000")
+		u := uuid.NewMD5(namespace, []byte(label+description))
+		r.ID = u.String()
+	} else {
+		u, _ := uuid.NewRandom()
+		r.ID = u.String()
+	}
 	r.Version = GenerateVersion()
 	r.Label = label
 	r.Description = description

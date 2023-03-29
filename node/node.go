@@ -50,7 +50,7 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 	clock2 := &ptpClock
 	label := getResourceLabel(namePrefix, index)
 	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node")
-	n.Href = "http://172.16.221.69:4003/"
+	n.Href = "http://172.16.169.69:4003/"
 	n.Hostname = "TEST-NODE"
 	n.Api.Endpoints = append(n.Api.Endpoints, endpoint)
 	n.Api.Versions = versions

@@ -12,11 +12,14 @@ import (
 )
 
 var configFile = flag.String("config", "config.json", "Conifg file containing resource generation info")
+var useRandom = flag.Bool("random", true, "Whether to use a random UUID for the device or not")
 
 func main() {
 
 	flag.Parse()
 	config.ConfigFilename = configFile
+	random := *useRandom
+	print(random)
 
 	config := config.New()
 	baseUrl := config.Registry.Scheme + "://" + config.Registry.IP
@@ -55,7 +58,7 @@ func main() {
 	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
 	nodes := util.BuildNodes(numNodes, numInterfaces, config.ResourceQuantities.Nodes.NamePrefix)
-	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix)
+	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix, random)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources)
 	flows := util.BuildFlows(devices, sources, videoFlowType, audioFlowType, dataFlowType)
