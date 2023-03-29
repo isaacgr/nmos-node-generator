@@ -1,8 +1,8 @@
 {
   "registry": {
-    "ip": "localhost",
-    "port": 8010,
-    "scheme": "http",
+    "ip": "172.16.220.48",
+    "port": 443,
+    "scheme": "https",
     "version": "v1.3"
   },
   "resource": {

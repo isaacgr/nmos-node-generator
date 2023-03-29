@@ -16,12 +16,12 @@ func BuildNodes(nn int, ni int, nameprefix string) []node.Node {
 	return nodes
 }
 
-func BuildDevices(n []node.Node, nd int, nameprefix string) []node.Device {
+func BuildDevices(n []node.Node, nd int, nameprefix string, useRandom bool) []node.Device {
 	devices := []node.Device{}
 	for i := 0; i < nd; i++ {
 		for j := 0; j < len(n); j++ {
 			device := node.Device{}
-			device.BuildResource(n[j], i+1, nameprefix)
+			device.BuildResource(n[j], i+1, nameprefix, useRandom)
 			devices = append(devices, device)
 		}
 	}
