@@ -29,7 +29,7 @@ func SetBaseResourceProperties(label string, description string, random ...bool)
 }
 
 func SetBaseSourceProperties(label string, description string, d Device, useRandomResource bool) *BaseSource {
-	r := SetBaseResourceProperties(label, description)
+	r := SetBaseResourceProperties(label, description, useRandomResource)
 	bs := BaseSource{}
 	bs.BaseResource = r
 	bs.GrainRate = GrainRate{
@@ -42,7 +42,7 @@ func SetBaseSourceProperties(label string, description string, d Device, useRand
 }
 
 func SetBaseFlowProperties(label string, description string, d Device, sId string, useRandomResource bool) *BaseFlow {
-	r := SetBaseResourceProperties(label, description)
+	r := SetBaseResourceProperties(label, description, useRandomResource)
 	bf := BaseFlow{}
 	bf.BaseResource = r
 	bf.GrainRate = GrainRate{

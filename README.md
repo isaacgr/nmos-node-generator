@@ -18,9 +18,9 @@ A tool to generate fake NMOS nodes for general or scale testing of a registry. W
 -config string
         Conifg file containing resource generation info (default "config.json")
 -random-device-uuid
-        Whether to use a random UUID for the device or not (default false)
--random-device-uuid
-        Whether to use a random UUID for the devices resource or not (default false)
+        Whether to use a random UUID for the device or not (default true)
+-random-resource-uuid
+        Whether to use a random UUID for the device resources or not (default true)
 ```
 
 The config file should have a syntax similar to below
