@@ -28,7 +28,7 @@ func SetBaseResourceProperties(label string, description string, random ...bool)
 	return &r
 }
 
-func SetBaseSourceProperties(label string, description string, d Device) *BaseSource {
+func SetBaseSourceProperties(label string, description string, d Device, useRandomResource bool) *BaseSource {
 	r := SetBaseResourceProperties(label, description)
 	bs := BaseSource{}
 	bs.BaseResource = r
@@ -41,7 +41,7 @@ func SetBaseSourceProperties(label string, description string, d Device) *BaseSo
 	return &bs
 }
 
-func SetBaseFlowProperties(label string, description string, d Device, sId string) *BaseFlow {
+func SetBaseFlowProperties(label string, description string, d Device, sId string, useRandomResource bool) *BaseFlow {
 	r := SetBaseResourceProperties(label, description)
 	bf := BaseFlow{}
 	bf.BaseResource = r
