@@ -10,13 +10,13 @@ type Flow interface {
 func (f *FlowVideoRaw) BuildResource(d Device, s Source, index int, useRandomResource bool) {
 	fv := FlowVideo{}
 	label := getResourceLabel(d.Label+"."+"FlowVideo", index)
-	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Video Flow", d, s.getId(), useRandomResource)
-	f.Format = VideoFormat
-	f.FrameWidth = 1920
-	f.FrameHeight = 1080
-	f.InterlaceMode = InterlaceModes["progressive"]
-	f.Colorspace = ColorSpaces["BT709"]
-	f.TransferCharacteristic = TransferCharacteristics["SDR"]
+	fv.BaseFlow = SetBaseFlowProperties(label, "NMOS Video Flow", d, s.getId(), useRandomResource)
+	fv.Format = VideoFormat
+	fv.FrameWidth = 1920
+	fv.FrameHeight = 1080
+	fv.InterlaceMode = InterlaceModes["progressive"]
+	fv.Colorspace = ColorSpaces["BT709"]
+	fv.TransferCharacteristic = TransferCharacteristics["SDR"]
 	f.FlowVideo = fv
 	f.MediaType = VideoMediaTypes["raw"]
 	c := RawVideoComponent{
@@ -31,9 +31,9 @@ func (f *FlowVideoRaw) BuildResource(d Device, s Source, index int, useRandomRes
 func (f *FlowAudioRaw) BuildResource(d Device, s Source, index int, useRandomResource bool) {
 	fa := FlowAudio{}
 	label := getResourceLabel(d.Label+"."+"FlowAudio", index)
-	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Audio Flow", d, s.getId(), useRandomResource)
-	f.Format = AudioFormat
-	f.SampleRate = SampleRate{
+	fa.BaseFlow = SetBaseFlowProperties(label, "NMOS Audio Flow", d, s.getId(), useRandomResource)
+	fa.Format = AudioFormat
+	fa.SampleRate = SampleRate{
 		1,
 		1,
 	}
@@ -45,9 +45,9 @@ func (f *FlowAudioRaw) BuildResource(d Device, s Source, index int, useRandomRes
 func (f *FlowAudioCoded) BuildResource(d Device, s Source, index int, useRandomResource bool) {
 	fa := FlowAudio{}
 	label := getResourceLabel(d.Label+"."+"FlowAudio", index)
-	f.BaseFlow = SetBaseFlowProperties(label, "NMOS Audio Flow", d, s.getId(), useRandomResource)
-	f.Format = AudioFormat
-	f.SampleRate = SampleRate{
+	fa.BaseFlow = SetBaseFlowProperties(label, "NMOS Audio Flow", d, s.getId(), useRandomResource)
+	fa.Format = AudioFormat
+	fa.SampleRate = SampleRate{
 		1,
 		1,
 	}
