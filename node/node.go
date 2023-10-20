@@ -4,10 +4,11 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/isaacgr/nmos-node-generator/config"
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
+func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, attachedNetworkDevices []config.AttachedNetworkDevices) {
 	// build out node with some default values
 	endpoint := Endpoint{
 		"172.16.220.69",
@@ -19,10 +20,7 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 		log.Fatal("Unable to generate gmid for clock")
 	}
 	versions := []string{"v1.3", "v1.2"}
-	attachedNetworkDevice := NetworkDevice{
-		GenerateMac(),
-		GenerateMac(),
-	}
+	// attachedNetworkDevice :=
 
 	internalClock := ClockInternal{
 		"clk0",
@@ -42,7 +40,10 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 			GenerateMac(),
 			GenerateMac(),
 			"eth" + strconv.Itoa(i),
-			attachedNetworkDevice,
+			NetworkDevice{
+				attachedNetworkDevices[i].ChassisID,
+				attachedNetworkDevices[i].PortID,
+			},
 		})
 	}
 

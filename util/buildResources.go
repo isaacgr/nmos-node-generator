@@ -3,14 +3,15 @@ package util
 import (
 	"log"
 
+	"github.com/isaacgr/nmos-node-generator/config"
 	"github.com/isaacgr/nmos-node-generator/node"
 )
 
-func BuildNodes(nn int, ni int, nameprefix string) []node.Node {
+func BuildNodes(nn int, ni int, nameprefix string, attachedNetworkDevices []config.AttachedNetworkDevices) []node.Node {
 	nodes := []node.Node{}
 	for i := 0; i < nn; i++ {
 		node := node.Node{}
-		node.BuildResource(i+1, ni, nameprefix)
+		node.BuildResource(i+1, ni, nameprefix, attachedNetworkDevices)
 		nodes = append(nodes, node)
 	}
 	return nodes
