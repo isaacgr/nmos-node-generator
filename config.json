@@ -1,91 +1,91 @@
 {
-  "registry": {
-    "ip": "10.2.0.10",
-    "port": 8090,
-    "scheme": "http",
-    "version": "v1.3"
-  },
-  "resource": {
-    "nodes": {
-      "count": 1,
-      "num_interfaces": 2,
-      "name_prefix": "evNode",
-      "attached_network_devices": [
-        {
-          "chassis_id": "2c-dd-e9-49-2d-8e",
-          "port_id": "Ethernet1/1"
+    "registry": {
+        "ip": "10.2.0.7",
+        "port": 443,
+        "scheme": "https",
+        "version": "v1.3"
+    },
+    "resource": {
+        "nodes": {
+            "count": 1,
+            "num_interfaces": 2,
+            "name_prefix": "evNode",
+            "attached_network_devices": [
+                {
+                    "chassis_id": "2c-dd-e9-49-2d-8e",
+                    "port_id": "Ethernet3"
+                },
+                {
+                    "chassis_id": "2c-dd-e9-49-2d-8d",
+                    "port_id": "Ethernet2"
+                }
+            ]
         },
-        {
-          "chassis_id": "2c-dd-e9-49-2d-8e",
-          "port_id": "Ethernet2/1"
+        "devices": 1,
+        "name_prefix": "evDevice",
+        "sources": {
+            "generic": {
+                "count": 1,
+                "flows": {
+                    "media_type": "raw",
+                    "sender": {
+                        "iface": [
+                            1,
+                            2
+                        ]
+                    }
+                }
+            },
+            "audio": {
+                "count": 1,
+                "flows": {
+                    "media_type": "audio/L16",
+                    "sender": {
+                        "iface": [
+                            1,
+                            2
+                        ]
+                    }
+                }
+            },
+            "data": {
+                "count": 1,
+                "flows": {
+                    "media_type": "smpte291",
+                    "sender": {
+                        "iface": [
+                            1,
+                            2
+                        ]
+                    }
+                }
+            }
+        },
+        "receivers": {
+            "video": {
+                "count": 1,
+                "iface": [
+                    1,
+                    2
+                ],
+                "media_type": "raw"
+            },
+            "audio": {
+                "count": 1,
+                "iface": [
+                    1,
+                    2
+                ],
+                "media_type": "audio/L16"
+            },
+            "data": {
+                "count": 1,
+                "iface": [
+                    1,
+                    2
+                ],
+                "media_type": "smpte291"
+            }
         }
-      ]
-    },
-    "devices": 1,
-    "name_prefix": "evDevice",
-    "sources": {
-      "generic": {
-        "count": 1,
-        "flows": {
-          "media_type": "raw",
-          "sender": {
-            "iface": [
-              1,
-              2
-            ]
-          }
-        }
-      },
-      "audio": {
-        "count": 1,
-        "flows": {
-          "media_type": "audio/L16",
-          "sender": {
-            "iface": [
-              1,
-              2
-            ]
-          }
-        }
-      },
-      "data": {
-        "count": 1,
-        "flows": {
-          "media_type": "smpte291",
-          "sender": {
-            "iface": [
-              1,
-              2
-            ]
-          }
-        }
-      }
-    },
-    "receivers": {
-      "video": {
-        "count": 1,
-        "iface": [
-          1,
-          2
-        ],
-        "media_type": "raw"
-      },
-      "audio": {
-        "count": 1,
-        "iface": [
-          1,
-          2
-        ],
-        "media_type": "audio/L16"
-      },
-      "data": {
-        "count": 1,
-        "iface": [
-          1,
-          2
-        ],
-        "media_type": "smpte291"
-      }
     }
-  }
 }

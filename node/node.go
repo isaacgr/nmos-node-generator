@@ -8,7 +8,7 @@ import (
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, attachedNetworkDevices []config.AttachedNetworkDevices) {
+func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, attachedNetworkDevices []config.AttachedNetworkDevices, randomNodeUUID bool) {
 	// build out node with some default values
 	endpoint := Endpoint{
 		"172.16.220.69",
@@ -50,7 +50,7 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, at
 	clock1 := &internalClock
 	clock2 := &ptpClock
 	label := getResourceLabel(namePrefix, index)
-	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node")
+	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node", randomNodeUUID)
 	n.Href = "http://172.16.169.69:4003/"
 	n.Hostname = "TEST-NODE"
 	n.Api.Endpoints = append(n.Api.Endpoints, endpoint)

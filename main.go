@@ -12,8 +12,9 @@ import (
 )
 
 var configFile = flag.String("config", "config.json", "Conifg file containing resource generation info")
-var useRandomDevice = flag.Bool("random-device-uuid", true, "Pass this flag to use a non-random UUID for the device")
-var useRandomResource = flag.Bool("random-resource-uuid", true, "Pass this flag to use a non-random UUID for the device's resources")
+var useRandomNode = flag.Bool("random-node-id", true, "Pass this flag to use a non-random UUID for the node")
+var useRandomDevice = flag.Bool("random-device-id", true, "Pass this flag to use a non-random UUID for the device")
+var useRandomResource = flag.Bool("random-resource-id", true, "Pass this flag to use a non-random UUID for the device's resources")
 
 func main() {
 
@@ -21,6 +22,7 @@ func main() {
 	config.ConfigFilename = configFile
 	randomDeviceUUID := *useRandomDevice
 	randomResourceUUID := *useRandomResource
+	randomNodeUUID := *useRandomNode
 
 	config := config.New()
 	baseUrl := config.Registry.Scheme + "://" + config.Registry.IP
@@ -58,7 +60,7 @@ func main() {
 	audioFlowType := config.ResourceQuantities.Sources.Audio.Flows.MediaType
 	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
-	nodes := util.BuildNodes(numNodes, numInterfaces, config.ResourceQuantities.Nodes.NamePrefix, config.ResourceQuantities.Nodes.AttachedNetworkDevices)
+	nodes := util.BuildNodes(numNodes, numInterfaces, config.ResourceQuantities.Nodes.NamePrefix, config.ResourceQuantities.Nodes.AttachedNetworkDevices, randomNodeUUID)
 	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix, randomDeviceUUID)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers, randomResourceUUID)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources, randomResourceUUID)
