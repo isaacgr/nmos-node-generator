@@ -12,8 +12,8 @@ func getSenderConfig() config.SourceResource {
 
 func BuildBaseSender(n Node, d *Device, f Flow, b []int) *BaseSender {
 	s := BaseSender{}
-	for i := range b {
-		s.InterfaceBindings = append(s.InterfaceBindings, n.Interfaces[i].Name)
+	for _, iface := range b {
+		s.InterfaceBindings = append(s.InterfaceBindings, n.Interfaces[iface-1].Name)
 	}
 	s.DeviceId = d.ID
 	s.FlowId = f.getId()
