@@ -20,7 +20,6 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, at
 		log.Fatal("Unable to generate gmid for clock")
 	}
 	versions := []string{"v1.3", "v1.2"}
-	// attachedNetworkDevice :=
 
 	internalClock := ClockInternal{
 		"clk0",
@@ -36,14 +35,22 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, at
 	}
 
 	for i := 0; i < numInterfaces; i++ {
+		var attachedNetworkDevice *NetworkDevice
+
+		if i < len(attachedNetworkDevices) {
+			if attachedNetworkDevices[i].ChassisID != "" && attachedNetworkDevices[i].PortID != "" {
+				attachedNetworkDevice = &NetworkDevice{
+					attachedNetworkDevices[i].ChassisID,
+					attachedNetworkDevices[i].PortID,
+				}
+			}
+		}
+
 		n.Interfaces = append(n.Interfaces, NetworkInterface{
 			GenerateMac(),
 			GenerateMac(),
 			"eth" + strconv.Itoa(i),
-			NetworkDevice{
-				attachedNetworkDevices[i].ChassisID,
-				attachedNetworkDevices[i].PortID,
-			},
+			attachedNetworkDevice,
 		})
 	}
 
