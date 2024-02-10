@@ -48,9 +48,10 @@ type SenderResource struct {
 }
 
 type NodeResource struct {
-	Count         int    `json:"count"`
-	NumInterfaces int    `json:"num_interfaces"`
-	NamePrefix    string `json:"name_prefix"`
+	Count                  int                      `json:"count"`
+	NumInterfaces          int                      `json:"num_interfaces"`
+	NamePrefix             string                   `json:"name_prefix"`
+	AttachedNetworkDevices []AttachedNetworkDevices `json:"attached_network_devices"`
 }
 
 type ResourceQuantities struct {
@@ -66,4 +67,9 @@ type Registry struct {
 	Port    int    `json:"port"`
 	Scheme  string `json:"scheme"`
 	Version string `json:"version"`
+}
+
+type AttachedNetworkDevices struct {
+	ChassisID string `json:"chassis_id"`
+	PortID    string `json:"port_id"`
 }

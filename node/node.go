@@ -4,10 +4,11 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/isaacgr/nmos-node-generator/config"
 	regen "github.com/zach-klippenstein/goregen"
 )
 
-func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
+func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string, attachedNetworkDevices []config.AttachedNetworkDevices, randomNodeUUID bool) {
 	// build out node with some default values
 	endpoint := Endpoint{
 		"172.16.220.69",
@@ -19,10 +20,6 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 		log.Fatal("Unable to generate gmid for clock")
 	}
 	versions := []string{"v1.3", "v1.2"}
-	attachedNetworkDevice := NetworkDevice{
-		GenerateMac(),
-		GenerateMac(),
-	}
 
 	internalClock := ClockInternal{
 		"clk0",
@@ -38,6 +35,17 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 	}
 
 	for i := 0; i < numInterfaces; i++ {
+		var attachedNetworkDevice *NetworkDevice
+
+		if i < len(attachedNetworkDevices) {
+			if attachedNetworkDevices[i].ChassisID != "" && attachedNetworkDevices[i].PortID != "" {
+				attachedNetworkDevice = &NetworkDevice{
+					attachedNetworkDevices[i].ChassisID,
+					attachedNetworkDevices[i].PortID,
+				}
+			}
+		}
+
 		n.Interfaces = append(n.Interfaces, NetworkInterface{
 			GenerateMac(),
 			GenerateMac(),
@@ -49,7 +57,7 @@ func (n *Node) BuildResource(index int, numInterfaces int, namePrefix string) {
 	clock1 := &internalClock
 	clock2 := &ptpClock
 	label := getResourceLabel(namePrefix, index)
-	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node")
+	n.BaseResource = SetBaseResourceProperties(label, "NMOS Test Node", randomNodeUUID)
 	n.Href = "http://172.16.169.69:4003/"
 	n.Hostname = "TEST-NODE"
 	n.Api.Endpoints = append(n.Api.Endpoints, endpoint)

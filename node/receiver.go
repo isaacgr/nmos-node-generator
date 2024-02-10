@@ -13,8 +13,8 @@ func getReceiverConfig() config.ReceiverResource {
 func BuildBaseReceiver(n Node, d *Device, b []int) *BaseReceiver {
 	r := BaseReceiver{}
 	c := ReceiverCaps{}
-	for i := range b {
-		r.InterfaceBindings = append(r.InterfaceBindings, n.Interfaces[i].Name)
+	for _, iface := range b {
+		r.InterfaceBindings = append(r.InterfaceBindings, n.Interfaces[iface-1].Name)
 	}
 	r.DeviceId = d.ID
 	r.Transport = ReceiverTransport

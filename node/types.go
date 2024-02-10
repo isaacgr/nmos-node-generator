@@ -31,10 +31,10 @@ type NetworkDevice struct {
 }
 
 type NetworkInterface struct {
-	ChassisId             string        `json:"chassis_id"`
-	PortId                string        `json:"port_id"`
-	Name                  string        `json:"name"`
-	AttachedNetworkDevice NetworkDevice `json:"attached_network_device"`
+	ChassisId             string         `json:"chassis_id"`
+	PortId                string         `json:"port_id"`
+	Name                  string         `json:"name"`
+	AttachedNetworkDevice *NetworkDevice `json:"attached_network_device,omitempty"`
 }
 
 type ClockInternal struct {
@@ -100,7 +100,7 @@ type BaseSender struct {
 	Caps              Capabilities       `json:"caps"`
 	Transport         string             `json:"transport"`
 	DeviceId          string             `json:"device_id"`
-	Manifest          *string             `json:"manifest_href"`
+	Manifest          *string            `json:"manifest_href"`
 	InterfaceBindings []string           `json:"interface_bindings"`
 	Subscription      SenderSubscription `json:"subscription"`
 }
