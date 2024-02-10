@@ -97,5 +97,6 @@ func main() {
 
 func NodeKeepalive(client client.NmosClient, url string, k chan string, ng *sync.WaitGroup) {
 	ng.Wait()
+	time.Sleep(5 * time.Second)
 	client.Keepalive(url, k)
 }

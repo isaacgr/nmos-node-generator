@@ -19,8 +19,8 @@ func BuildNodes(nn int, ni int, nameprefix string, attachedNetworkDevices []conf
 
 func BuildDevices(n []node.Node, nd int, nameprefix string, useRandom bool) []node.Device {
 	devices := []node.Device{}
-	for i := 0; i < nd; i++ {
-		for j := 0; j < len(n); j++ {
+	for j := 0; j < len(n); j++ {
+		for i := 0; i < nd; i++ {
 			device := node.Device{}
 			device.BuildResource(n[j], i+1, nameprefix, useRandom)
 			devices = append(devices, device)
@@ -32,7 +32,7 @@ func BuildDevices(n []node.Node, nd int, nameprefix string, useRandom bool) []no
 func BuildReceivers(n []node.Node, d []node.Device, nvr int, nar int, ndr int, useRandomResource bool) []node.Receiver {
 	receivers := []node.Receiver{}
 	for k := 0; k < len(n); k++ {
-		for j := 0; j < len(d); j++ {
+		for j := (len(d) / len(n)) * k; j < (len(d)/len(n))*(k+1); j++ {
 			for i := 0; i < nvr; i++ {
 				receiver := node.ReceiverVideo{}
 				receiver.BuildResource(n[k], &d[j], i+1, useRandomResource)
@@ -56,8 +56,8 @@ func BuildReceivers(n []node.Node, d []node.Device, nvr int, nar int, ndr int, u
 func BuildSenders(n []node.Node, d []node.Device, f []node.Flow, useRandomResource bool) []node.Sender {
 	senders := []node.Sender{}
 	for k := 0; k < len(n); k++ {
-		for j := 0; j < len(d); j++ {
-			for x := 0; x < len(f); x++ {
+		for j := (len(d) / len(n)) * k; j < (len(d)/len(n))*(k+1); j++ {
+			for x := (len(f) / len(d)) * j; x < (len(f)/len(d))*(j+1); x++ {
 				switch f[x].(type) {
 				case *node.FlowVideoRaw:
 					sender := node.SenderVideo{}
@@ -107,7 +107,7 @@ func BuildSources(d []node.Device, ngs int, nas int, nds int, useRandomResource 
 func BuildFlows(d []node.Device, s []node.Source, vf string, af string, df string, useRandomResource bool) []node.Flow {
 	flows := []node.Flow{}
 	for j := 0; j < len(d); j++ {
-		for i := 0; i < len(s); i++ {
+		for i := (len(s) / len(d)) * j; i < (len(s)/len(d))*(j+1); i++ {
 			switch s[i].(type) {
 			case *node.SourceGeneric:
 				if vf == "raw" {
