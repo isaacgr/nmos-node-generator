@@ -30,8 +30,8 @@ Use port 443 for https requests
 ```json
 {
   "registry": {
-    "ip": "localhost",
-    "port": 8010,
+    "ip": "10.2.0.10",
+    "port": 8090,
     "scheme": "http",
     "version": "v1.3"
   },
@@ -39,7 +39,17 @@ Use port 443 for https requests
     "nodes": {
       "count": 1,
       "num_interfaces": 2,
-      "name_prefix": "evNode"
+      "name_prefix": "evNode",
+      "attached_network_devices": [
+        {
+          "chassis_id": "2c-dd-e9-49-2d-8e",
+          "port_id": "Ethernet1/1"
+        },
+        {
+          "chassis_id": "2c-dd-e9-49-2d-8e",
+          "port_id": "Ethernet2/1"
+        }
+      ]
     },
     "devices": 1,
     "name_prefix": "evDevice",
