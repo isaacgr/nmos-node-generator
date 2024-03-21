@@ -46,7 +46,9 @@ func main() {
 	if numInterfaces == 0 {
 		log.Fatal("Must define at least one interface")
 	}
-	numDevices := config.ResourceQuantities.Devices
+	numDevices := config.ResourceQuantities.Devices.Count
+	deviceIp := config.ResourceQuantities.Devices.IpAddress
+	devicePortStart := config.ResourceQuantities.Devices.PortStart
 	if numDevices == 0 {
 		log.Fatal("Must define at least one device")
 	}
@@ -61,7 +63,7 @@ func main() {
 	dataFlowType := config.ResourceQuantities.Sources.Data.Flows.MediaType
 
 	nodes := util.BuildNodes(numNodes, numInterfaces, config.ResourceQuantities.Nodes.NamePrefix, config.ResourceQuantities.Nodes.AttachedNetworkDevices, randomNodeUUID)
-	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix, randomDeviceUUID)
+	devices := util.BuildDevices(nodes, numDevices, config.ResourceQuantities.NamePrefix, deviceIp, devicePortStart, randomDeviceUUID)
 	receivers := util.BuildReceivers(nodes, devices, numVideoReceivers, numAudioReceivers, numDataReceivers, randomResourceUUID)
 	sources := util.BuildSources(devices, numGenericSources, numAudioSources, numDataSources, randomResourceUUID)
 	flows := util.BuildFlows(devices, sources, videoFlowType, audioFlowType, dataFlowType, randomResourceUUID)

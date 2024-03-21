@@ -1,17 +1,22 @@
 package node
 
-func (d *Device) BuildResource(n Node, index int, nameprefix string, useRandom bool) {
+import "fmt"
+
+func (d *Device) BuildResource(n Node, numdevices int, nodeidx int, index int, nameprefix string, deviceip string, devicePortStart int, useRandom bool) {
 	label := getResourceLabel(n.Label+"."+nameprefix, index)
 	d.BaseResource = SetBaseResourceProperties(label, "NMOS Test Device", useRandom)
 	d.NodeId = n.ID
+	deviceport := devicePortStart + ((nodeidx - 1) * numdevices) + (index - 1)
+	deviceHref := fmt.Sprintf("http://%s:%d/", deviceip, deviceport)
+
 	c1 := Controls{
 		n.Href,
-		"urn:x-nmos:control:sr-ctrl/v1.0",
+		"urn:x-nmos:control:sr-ctrl/v1.1",
 		false,
 	}
 	c2 := Controls{
-		"http://172.16.169.169:4003",
-		"urn:x-nmos:control:sr-ctrl/v1.0",
+		deviceHref,
+		"urn:x-nmos:control:sr-ctrl/v1.1",
 		false,
 	}
 	d.Type = "urn:x-nmos:device:generic"
