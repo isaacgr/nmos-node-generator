@@ -21,7 +21,11 @@
                 }
             ]
         },
-        "devices": 1,
+        "devices": {
+            "count": 1,
+            "ip_address": "10.8.1.98",
+            "port_start": 61001
+        },
         "name_prefix": "evDevice",
         "sources": {
             "generic": {

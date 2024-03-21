@@ -54,9 +54,15 @@ type NodeResource struct {
 	AttachedNetworkDevices []AttachedNetworkDevices `json:"attached_network_devices"`
 }
 
+type DeviceResource struct {
+	Count     int    `json:"count"`
+	IpAddress string `json:"ip_address"`
+	PortStart int    `json:"port_start"`
+}
+
 type ResourceQuantities struct {
 	Nodes      NodeResource     `json:"nodes"`
-	Devices    int              `json:"devices"`
+	Devices    DeviceResource   `json:"devices"`
 	Receivers  ReceiverResource `json:"receivers"`
 	Sources    SourceResource   `json:"sources"`
 	NamePrefix string           `json:"name_prefix"`

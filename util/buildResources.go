@@ -17,12 +17,12 @@ func BuildNodes(nn int, ni int, nameprefix string, attachedNetworkDevices []conf
 	return nodes
 }
 
-func BuildDevices(n []node.Node, nd int, nameprefix string, useRandom bool) []node.Device {
+func BuildDevices(n []node.Node, nd int, nameprefix string, deviceip string, devicePortStart int, useRandom bool) []node.Device {
 	devices := []node.Device{}
 	for j := 0; j < len(n); j++ {
 		for i := 0; i < nd; i++ {
 			device := node.Device{}
-			device.BuildResource(n[j], i+1, nameprefix, useRandom)
+			device.BuildResource(n[j], nd, j+1, i+1, nameprefix, deviceip, devicePortStart, useRandom)
 			devices = append(devices, device)
 		}
 	}
