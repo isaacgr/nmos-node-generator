@@ -1,8 +1,11 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"log"
+	"math"
+	"net/http"
 	"sync"
 	"time"
 
@@ -27,10 +30,22 @@ func main() {
 	config := config.New()
 	baseUrl := config.Registry.Scheme + "://" + config.Registry.IP
 	port := config.Registry.Port
+	transport := &http.Transport{
+		DisableKeepAlives:   false,
+		MaxIdleConns:        0,
+		MaxIdleConnsPerHost: math.MaxInt64,
+		IdleConnTimeout:     300 * time.Second,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
+	httpclient := &http.Client{Transport: transport, Timeout: 20 * time.Second}
 	c := client.NmosClient{
 		baseUrl,
 		port,
 		config.Registry.Version,
+		httpclient,
+		transport,
 	}
 	var KEEPALIVE_URL = "/x-nmos/registration/" + c.RegistryVersion + "/health/nodes/"
 	var ng sync.WaitGroup
@@ -77,7 +92,7 @@ func main() {
 		}
 		ng.Add(1)
 		go client.RegisterNodes(c, data, &ng)
-		go NodeKeepalive(c, KEEPALIVE_URL+n.ID, k, &ng)
+        go NodeKeepalive(c, KEEPALIVE_URL+n.ID, k, &ng)
 	}
 	dg.Add(1)
 	sg.Add(1)
