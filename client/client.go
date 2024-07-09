@@ -2,14 +2,12 @@ package client
 
 import (
 	"bytes"
-	"crypto/tls"
 	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/helloeave/json"
 )
@@ -18,6 +16,8 @@ type NmosClient struct {
 	BaseUrl         string
 	Port            int
 	RegistryVersion string
+	HttpClient      *http.Client
+	Transport       *http.Transport
 }
 
 type HttpResponse struct {
@@ -45,28 +45,18 @@ func (c NmosClient) PostWith(endpoint string, params interface{}) (*http.Request
 }
 
 func (c NmosClient) Do(request *http.Request) (*HttpResponse, error) {
-	var client *http.Client
 	var err error
 	request.Header.Set("Content-Type", "application/json")
 
-	if request.URL.Scheme == "https" {
-		t := &http.Transport{
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		}
-		client = &http.Client{Transport: t, Timeout: 20 * time.Second}
-	} else {
-		client = &http.Client{Timeout: 20 * time.Second}
-	}
-	response, err := client.Do(request)
+	response, err := c.HttpClient.Do(request)
+
 	if err != nil {
 		return nil, err
 	}
 
 	defer response.Body.Close()
-
 	body, err := ioutil.ReadAll(response.Body)
+
 	if err != nil {
 		return nil, err
 	}
