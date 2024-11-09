@@ -1,6 +1,6 @@
 module github.com/isaacgr/nmos-node-generator
 
-go 1.16
+go 1.23
 
 require (
 	github.com/google/go-querystring v1.1.0 // indirect

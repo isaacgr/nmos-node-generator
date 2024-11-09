@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/helloeave/json"
 )
@@ -81,13 +82,12 @@ func (c NmosClient) Keepalive(endpoint string, k chan string) {
 	es := strings.Split(endpoint, "/")
 	nodeId := es[len(es)-1]
 	err := c.postKeepalive(endpoint, nodeId, k)
+	log.Printf("Keepalive [%s]", nodeId)
 	if err != nil {
-		log.Printf("Keepalive failed. Node [%s]. Retrying.", nodeId)
-		err = retryKeepalive(1, func() error { return c.postKeepalive(endpoint, nodeId, k) })
-		if err != nil {
-			log.Fatalf("Keepalive failed. Node [%s]. Error [%s].", nodeId, err)
-		}
+		log.Printf("Keepalive failed for node [%s]. Retrying.", nodeId)
 	}
+	time.Sleep(5 * time.Second)
+	c.Keepalive(endpoint, k)
 }
 
 func (c NmosClient) postKeepalive(endpoint string, nodeId string, k chan string) error {
@@ -102,20 +102,11 @@ func (c NmosClient) postKeepalive(endpoint string, nodeId string, k chan string)
 	if response.StatusCode == 200 {
 		k <- nodeId
 		return nil
+	} else if response.StatusCode == 404 {
+		log.Printf("Node [%s] returned 404 on keepalive.", nodeId)
+		k <- "404" // Send signal to repost all resources
+		return errors.New("404 Not Found")
 	} else {
 		return errors.New(string(response.Body))
 	}
-}
-
-func retryKeepalive(attempts int, fn func() error) error {
-	if err := fn(); err != nil {
-		if s, ok := err.(stop); ok {
-			return s.error
-		}
-		if attempts--; attempts > 0 {
-			return retryKeepalive(attempts, fn)
-		}
-		return err
-	}
-	return nil
 }
