@@ -34,6 +34,16 @@ var useRandomResource = flag.Bool(
 	true,
 	"Pass this flag to use a non-random UUID for the device's resources",
 )
+var requestTimeout = flag.Int(
+	"request-timeout",
+	20,
+	"Set the timeout for HTTP requests",
+)
+var noKeepalive = flag.Bool(
+	"connection-keepalive",
+	true,
+	"Pass this flag to use a persistent HTTP connection",
+)
 
 func main() {
 
@@ -42,10 +52,13 @@ func main() {
 	randomDeviceUUID := *useRandomDevice
 	randomResourceUUID := *useRandomResource
 	randomNodeUUID := *useRandomNode
+	httpRequestTimeout := time.Duration(*requestTimeout)
+	connectionKeepalive := *noKeepalive
 
 	config := config.New()
 	baseUrl := config.Registry.Scheme + "://" + config.Registry.IP
 	port := config.Registry.Port
+
 	transport := &http.Transport{
 		DisableKeepAlives:   false,
 		MaxIdleConns:        0,
@@ -55,7 +68,17 @@ func main() {
 			InsecureSkipVerify: true,
 		},
 	}
-	httpclient := &http.Client{Transport: transport, Timeout: 20 * time.Second}
+	if connectionKeepalive == false {
+		transport = &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		}
+	}
+	httpclient := &http.Client{
+		Transport: transport,
+		Timeout:   httpRequestTimeout * time.Second,
+	}
 	c := client.NmosClient{
 		baseUrl,
 		port,
