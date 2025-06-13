@@ -1,10 +1,92 @@
-package node
+package types
 
+type Config struct {
+	ResourceQuantities ResourceQuantities `json:"resource"`
+	Registry           Registry           `json:"registry"`
+}
+
+type FlowResource struct {
+	MediaType string         `json:"media_type"`
+	Sender    SenderResource `json:"sender"`
+}
+
+type GenericSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
+type AudioSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
+type DataSource struct {
+	Count int          `json:"count"`
+	Flows FlowResource `json:"flows"`
+}
+
+type SourceResource struct {
+	Generic GenericSource `json:"generic"`
+	Audio   AudioSource   `json:"audio"`
+	Data    DataSource    `json:"data"`
+}
+
+type ReceiverDetails struct {
+	Count     int    `json:"count"`
+	MediaType string `json:"media_type"`
+	Iface     []int  `json:"iface"`
+}
+
+type ReceiverResource struct {
+	Video ReceiverDetails `json:"video"`
+	Audio ReceiverDetails `json:"audio"`
+	Data  ReceiverDetails `json:"data"`
+}
+
+type SenderResource struct {
+	Iface []int `json:"iface"`
+}
+
+type NodeResource struct {
+	Count                  int                      `json:"count"`
+	NumInterfaces          int                      `json:"num_interfaces"`
+	NamePrefix             string                   `json:"name_prefix"`
+	AttachedNetworkDevices []AttachedNetworkDevices `json:"attached_network_devices"`
+}
+
+type DeviceResource struct {
+	Count     int    `json:"count"`
+	IpAddress string `json:"ip_address"`
+	PortStart int    `json:"port_start"`
+}
+
+type ResourceQuantities struct {
+	Nodes      NodeResource     `json:"nodes"`
+	Devices    DeviceResource   `json:"devices"`
+	Receivers  ReceiverResource `json:"receivers"`
+	Sources    SourceResource   `json:"sources"`
+	NamePrefix string           `json:"name_prefix"`
+}
+
+type Registry struct {
+	IP      string `json:"ip"`
+	Port    int    `json:"port"`
+	Scheme  string `json:"scheme"`
+	Version string `json:"version"`
+}
+
+type AttachedNetworkDevices struct {
+	ChassisID string `json:"chassis_id"`
+	PortID    string `json:"port_id"`
+}
+
+// IS-04
+//
 // Common resource
 
 type Tags struct{}
 
-type BaseResource struct {
+type ResourceCore struct {
 	ID          string `json:"id"`
 	Version     string `json:"version"`
 	Label       string `json:"label"`
@@ -60,7 +142,7 @@ type Service struct {
 type Capabilities struct{}
 
 type Node struct {
-	*BaseResource
+	*ResourceCore
 	Href       string             `json:"href"`
 	Hostname   string             `json:"hostname"`
 	Caps       Capabilities       `json:"caps"`
@@ -79,7 +161,7 @@ type Controls struct {
 }
 
 type Device struct {
-	*BaseResource
+	*ResourceCore
 	Type      string     `json:"type"`
 	NodeId    string     `json:"node_id"`
 	Senders   []string   `json:"senders"`
@@ -95,7 +177,7 @@ type SenderSubscription struct {
 }
 
 type BaseSender struct {
-	*BaseResource
+	*ResourceCore
 	FlowId            string             `json:"flow_id"`
 	Caps              Capabilities       `json:"caps"`
 	Transport         string             `json:"transport"`
@@ -129,7 +211,7 @@ type ReceiverCaps struct {
 }
 
 type BaseReceiver struct {
-	*BaseResource
+	*ResourceCore
 	Transport         string               `json:"transport"`
 	DeviceId          string               `json:"device_id"`
 	InterfaceBindings []string             `json:"interface_bindings"`
@@ -158,7 +240,7 @@ type GrainRate struct {
 }
 
 type BaseSource struct {
-	*BaseResource
+	*ResourceCore
 	GrainRate GrainRate    `json:"grain_rate"`
 	Caps      Capabilities `json:"caps"`
 	DeviceId  string       `json:"device_id"`
@@ -196,7 +278,7 @@ type SampleRate struct {
 }
 
 type BaseFlow struct {
-	*BaseResource
+	*ResourceCore
 	SourceID  string    `json:"source_id"`
 	DeviceId  string    `json:"device_id"`
 	Parents   []string  `json:"parents"`

@@ -1,4 +1,4 @@
-package node
+package constants
 
 type videoMediaMap map[string]string
 type audioMediaMap map[string]string
