@@ -2,6 +2,7 @@ package is04
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -63,8 +64,7 @@ type Node struct {
 	Services   []Service          `json:"services"`
 	Clocks     []interface{}      `json:"clocks"`
 	Interfaces []NetworkInterface `json:"interfaces"`
-	// Making private prevents json marshalling
-	devices    []Device
+	Devices    []Device           `json:"-"` // prevents json marshalling
 }
 
 func (n Node) encode() ([]byte, error) {
@@ -75,6 +75,15 @@ func (n Node) encode() ([]byte, error) {
 	}
 
 	return e, nil
+}
+
+func (n Node) getDevice(id string)(Device, error){
+	for _, device := range n.Devices{
+		if device.ID == id {
+			return device, nil
+		}
+	}
+	return  Device{}, errors.New("Device not found")
 }
 
 func NewNode(

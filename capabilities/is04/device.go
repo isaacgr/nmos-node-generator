@@ -48,6 +48,6 @@ func NewDevice(
 		Receivers: []string{},
 		Controls: []Control{},
 	}
-	n.devices = append(n.devices, d)
+	n.Devices = append(n.Devices, d)
 	return &d
 }

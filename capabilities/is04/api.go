@@ -19,9 +19,10 @@ type IS04Server struct {
 }
 
 func (s IS04Server) registerRoutes(server *http.ServeMux) {
-	server.HandleFunc("/", s.handleIndex())
-	server.HandleFunc("/self", s.handleSelf())
-	server.HandleFunc("/devices", s.handleDevices())
+	server.HandleFunc("/", s.handleIndex)
+	server.HandleFunc("/self", s.handleSelf)
+	server.HandleFunc("/devices", s.handleDevices)
+	server.HandleFunc("/devices/{id}", s.handleDevice)
 }
 
 func (s IS04Server) registerSignals(server *http.Server) {
@@ -35,6 +36,26 @@ func (s IS04Server) registerSignals(server *http.Server) {
 			log.Fatalf("Unable to close HTTP server. Error [%s]", err)
 		}
 	}()
+}
+
+func writeResources(
+	w http.ResponseWriter,
+	res []byte,
+	err error,
+) {
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		fmt.Printf(`Failed to serve content. Error [%s]`, err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write(
+			fmt.Appendf(
+				res,
+				fmt.Sprintf(`{"error": %s}`, strconv.Quote(err.Error())),
+			),
+		)
+	}
+	fmt.Fprintf(w, `%s`, res)
+
 }
 
 func (s IS04Server) Addr() string {
@@ -68,7 +89,10 @@ func (s IS04Server) Stop() error {
 	return nil
 }
 
-func (s IS04Server) handleIndex() http.HandlerFunc {
+func (s IS04Server) handleIndex(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 	endpoints := []string{
 		"self/",
 		"sources/",
@@ -77,57 +101,38 @@ func (s IS04Server) handleIndex() http.HandlerFunc {
 		"senders/",
 		"receivers/",
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		res, err := json.Marshal(endpoints)
-		if err != nil {
-			fmt.Printf(`Failed to serve base content. Err [%s]`, err)
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write(
-				fmt.Appendf(
-					res,
-					fmt.Sprintf(`{"error": %s}`, strconv.Quote(err.Error())),
-				),
-			)
-		}
-		fmt.Fprintf(w, `%s`, res)
-	}
+	res, err := json.Marshal(endpoints)
+	writeResources(w, res, err)
 }
 
-func (s IS04Server) handleSelf() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		res, err := json.Marshal(s.Node)
-		if err != nil {
-			fmt.Printf(`Failed to serve /self content. Err [%s]`, err)
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write(
-				fmt.Appendf(
-					res,
-					fmt.Sprintf(`{"error": %s}`, strconv.Quote(err.Error())),
-				),
-			)
-		}
-		fmt.Fprintf(w, `%s`, res)
-
-	}
+func (s IS04Server) handleSelf(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var res []byte
+	res, err := s.Node.encode()
+	writeResources(w, res, err)
 }
 
-func (s IS04Server) handleDevices() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		res, err := json.Marshal(s.Node.devices)
-		if err != nil {
-			fmt.Printf(`Failed to serve /devices content. Err [%s]`, err)
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write(
-				fmt.Appendf(
-					res,
-					fmt.Sprintf(`{"error": %s}`, strconv.Quote(err.Error())),
-				),
-			)
-		}
-		fmt.Fprintf(w, `%s`, res)
+func (s IS04Server) handleDevices(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var res []byte
+	res, err := json.Marshal(s.Node.Devices)
+	writeResources(w, res, err)
+}
 
+func (s IS04Server) handleDevice(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	id := r.PathValue("id")
+	d, err := s.Node.getDevice(id)
+	if err != nil {
+		writeResources(w, nil, err)
+	} else {
+		res, err := json.Marshal(d)
+		writeResources(w, res, err)
 	}
 }
