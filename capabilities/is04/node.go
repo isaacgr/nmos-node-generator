@@ -1,9 +1,9 @@
 package is04
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/segmentio/encoding/json"
 	"log"
 	"strconv"
 
@@ -64,10 +64,10 @@ type Node struct {
 	Services   []Service          `json:"services"`
 	Clocks     []interface{}      `json:"clocks"`
 	Interfaces []NetworkInterface `json:"interfaces"`
-	Devices    []Device           `json:"-"` // prevents json marshalling
+	Devices    []*Device          `json:"-"` // prevents json marshalling
 }
 
-func (n Node) encode() ([]byte, error) {
+func (n Node) Encode() ([]byte, error) {
 	e, err := json.Marshal(n)
 
 	if err != nil {
@@ -77,13 +77,13 @@ func (n Node) encode() ([]byte, error) {
 	return e, nil
 }
 
-func (n Node) getDevice(id string)(Device, error){
-	for _, device := range n.Devices{
+func (n Node) getDevice(id string) (*Device, error) {
+	for _, device := range n.Devices {
 		if device.ID == id {
 			return device, nil
 		}
 	}
-	return  Device{}, errors.New("Device not found")
+	return &Device{}, errors.New("Device not found")
 }
 
 func NewNode(

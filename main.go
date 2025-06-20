@@ -3,13 +3,24 @@ package main
 import (
 	"flag"
 	"github.com/isaacgr/nmos-node-generator/capabilities/is04"
+	"github.com/isaacgr/nmos-node-generator/constants"
 )
 
 func main() {
 	flag.Parse()
-	rc := is04.NewResourceCore(
+	nc := is04.NewResourceCore(
 		"evNode",
 		"NMOS Test Node",
+		false,
+	)
+	dc := is04.NewResourceCore(
+		"evDevice",
+		"NMOS Test Device",
+		false,
+	)
+	sc := is04.NewResourceCore(
+		"evSource",
+		"NMOS Test Source",
 		false,
 	)
 
@@ -18,12 +29,18 @@ func main() {
 		63001,
 		2,
 		nil,
-		rc,
+		nc,
 	)
 
-	is04.NewDevice(
+	rd := is04.NewDevice(
 		rn,
-		false,
+		dc,
+	)
+
+	is04.NewSource(
+		rd,
+		constants.VideoFormat,
+		sc,
 	)
 
 	s := is04.IS04Server{

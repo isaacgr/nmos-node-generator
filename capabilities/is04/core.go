@@ -15,7 +15,7 @@ type ResourceCore struct {
 }
 
 type IS04Resource interface {
-	encode() ([]byte, error)
+	Encode() ([]byte, error)
 }
 
 func NewResourceCore(

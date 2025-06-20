@@ -1,9 +1,9 @@
 package is04
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/segmentio/encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -20,9 +20,10 @@ type IS04Server struct {
 
 func (s IS04Server) registerRoutes(server *http.ServeMux) {
 	server.HandleFunc("/", s.handleIndex)
-	server.HandleFunc("/self", s.handleSelf)
-	server.HandleFunc("/devices", s.handleDevices)
-	server.HandleFunc("/devices/{id}", s.handleDevice)
+	server.HandleFunc("/self/", s.handleSelf)
+	server.HandleFunc("/devices/", s.handleDevices)
+	server.HandleFunc("/devices/{id}/", s.handleDevice)
+	server.HandleFunc("/sources/", s.handleSources)
 }
 
 func (s IS04Server) registerSignals(server *http.Server) {
@@ -110,7 +111,7 @@ func (s IS04Server) handleSelf(
 	r *http.Request,
 ) {
 	var res []byte
-	res, err := s.Node.encode()
+	res, err := s.Node.Encode()
 	writeResources(w, res, err)
 }
 
@@ -135,4 +136,17 @@ func (s IS04Server) handleDevice(
 		res, err := json.Marshal(d)
 		writeResources(w, res, err)
 	}
+}
+
+func (s IS04Server) handleSources(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var res []byte
+	var sources []Source
+	for d := range s.Node.Devices {
+		sources = append(sources, s.Node.Devices[d].Sources...)
+	}
+	res, err := json.Marshal(sources)
+	writeResources(w, res, err)
 }

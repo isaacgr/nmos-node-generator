@@ -1,10 +1,10 @@
 package is04
 
 import (
+	regen "github.com/zach-klippenstein/goregen"
 	"log"
 	"strconv"
 	"time"
-	regen "github.com/zach-klippenstein/goregen"
 )
 
 func ResourceVersion() string {
@@ -24,4 +24,3 @@ func GenerateMac() string {
 	}
 	return mac
 }
-

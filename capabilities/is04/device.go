@@ -1,6 +1,6 @@
 package is04
 
-import "encoding/json"
+import "github.com/segmentio/encoding/json"
 
 type Control struct {
 	Href          string `json:"href"`
@@ -13,12 +13,13 @@ type Device struct {
 	Type   string `json:"type"`
 	NodeId string `json:"node_id"`
 	// The inclusion of the senders and receivers lists has been deprecated
-	Senders   []string  `json:"senders"`
-	Receivers []string  `json:"receivers"`
-	Controls  []Control `json:"controls"`
+	Senders   []string   `json:"senders"`
+	Receivers []string   `json:"receivers"`
+	Controls  []*Control `json:"controls"`
+	Sources   []Source   `json:"-"`
 }
 
-func (d Device) encode() ([]byte, error) {
+func (d Device) Encode() ([]byte, error) {
 	e, err := json.Marshal(d)
 
 	if err != nil {
@@ -28,26 +29,22 @@ func (d Device) encode() ([]byte, error) {
 	return e, nil
 }
 
-func (d *Device) SetControls(c Control) {
+func (d *Device) SetControls(c *Control) {
 	d.Controls = append(d.Controls, c)
 }
 
 func NewDevice(
 	n *Node,
-	randomId bool,
+	resourceCore *ResourceCore,
 ) *Device {
-	d := Device{
-		ResourceCore: NewResourceCore(
-			"evDevice",
-			"NMOS Test Device",
-			randomId,
-		),
-		Type:   "urn:x-nmos:device:generic",
-		NodeId: n.ID,
-		Senders: []string{},
-		Receivers: []string{},
-		Controls: []Control{},
+	d := &Device{
+		ResourceCore: resourceCore,
+		Type:         "urn:x-nmos:device:generic",
+		NodeId:       n.ID,
+		Senders:      []string{},
+		Receivers:    []string{},
+		Controls:     []*Control{},
 	}
 	n.Devices = append(n.Devices, d)
-	return &d
+	return d
 }
