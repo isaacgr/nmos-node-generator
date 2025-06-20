@@ -7,12 +7,12 @@ type SampleRate struct {
 
 type FlowCore struct {
 	*ResourceCore
-	SourceID  string        `json:"source_id"`
-	DeviceID  string        `json:"device_id"`
-	Parents   []string      `json:"parents"`
-	GrainRate GrainRate     `json:"grain_rate"`
-	Source    *IS04Resource `json:"-"`
-	Device    *Device       `json:"-"`
+	SourceID  string    `json:"source_id"`
+	DeviceID  string    `json:"device_id"`
+	Parents   []string  `json:"parents"`
+	GrainRate GrainRate `json:"grain_rate"`
+	Source    Source    `json:"-"`
+	Device    *Device   `json:"-"`
 }
 
 type FlowVideo struct {
@@ -84,4 +84,20 @@ type FlowMux struct {
 	*FlowCore
 	Format    string `json:"format"`
 	MediaType string `json:"media_type"`
+}
+
+type Flow interface {
+	IS04Resource
+	GetFormat() string
+	GetMediaType() string
+}
+
+func NewFormat(
+	d *Device,
+	s Source,
+	format string,
+	mediaType string,
+	resourceCore *ResourceCore,
+) Flow {
+	
 }
